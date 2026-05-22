@@ -1,7 +1,7 @@
 <template>
     <aside
         class="flex flex-col bg-neutral text-neutral-content h-full transition-all duration-300 ease-in-out border-l border-white/5 shadow-2xl lg:shadow-none z-50"
-        :class="isExpanded ? 'w-[260px]' : 'w-24'">
+        :class="isExpanded ? 'w-65' : 'w-24'">
         <div class="h-24 flex items-center transition-all border-b border-white/5"
             :class="isExpanded ? 'px-6 justify-start' : 'px-0 justify-center'">
             <div @click="$emit('toggle')" class="flex items-center gap-3 cursor-pointer group">
@@ -35,7 +35,7 @@
                                 class="w-6 h-6 flex items-center justify-center *:w-full *:h-full"></span>
 
                             <span v-if="link.badge && !isExpanded"
-                                class="absolute -top-1 -left-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center shadow-sm">
+                                class="absolute -top-1 -left-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center shadow-sm">
                                 {{ link.badge }}
                             </span>
                         </div>
