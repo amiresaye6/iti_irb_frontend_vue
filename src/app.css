@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-html {
-  scroll-behavior: smooth;
-}
 
 @plugin "daisyui/theme" {
   name: "irb_modern";
@@ -55,4 +52,40 @@ html {
   --border: 1px;
   --depth: 0;
   --noise: 0;
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+  /* Use overlay to make the scrollbar float on top without taking up layout space */
+  overflow: overlay;
+}
+
+/* Premium Custom Scrollbar */
+/* Firefox */
+html {
+  /* scrollbar-width: thin; */
+  scrollbar-width: none;
+  scrollbar-color: rgba(156, 163, 175, 0.4) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  /* Remove any border or radius that might cause a solid background */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.4);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(107, 114, 128, 0.7);
 }
