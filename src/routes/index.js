@@ -28,7 +28,7 @@ const routes = [
         path: '/dashboard',
         name: "Dashboard",
         meta: { layout: 'main' },
-        component: () => import('../views/global/DashboardView.vue')
+        component: () => import('../views/global/ComponentsShowcase.vue')
     },
 
     {
