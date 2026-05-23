@@ -18,12 +18,9 @@
             </div>
 
             <main class="flex-1 p-4 md:p-8 overflow-x-hidden">
-
-                <div class="card bg-base-100 shadow-sm border border-base-300 mb-8">
-                </div>
-
-                <slot></slot>
-
+                <!-- <div class="card bg-base-100 shadow-sm border border-base-300 mb-8"> -->
+                    <slot></slot>
+                <!-- </div> -->
             </main>
         </div>
 

@@ -18,7 +18,7 @@
           v-for="(filter, index) in config" 
           :key="index"
           class="flex flex-col gap-1.5"
-          :class="filter.type === 'text' ? 'flex-1 min-w-[250px]' : 'w-full sm:w-[200px]'"
+          :class="filter.type === 'text' ? 'flex-1 min-w-62.5' : 'w-full sm:w-50'"
         >
           <label :for="`filter-${filter.key}`" class="text-xs font-semibold text-base-content/70 flex items-center gap-1">
             <svg v-if="filter.type === 'select'" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
