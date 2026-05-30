@@ -10,15 +10,19 @@ export const useApi = async (
         setLoading(true);
         setError(null);
 
-        const obtions = {
+        const token = localStorage.getItem('token');
+        const options = {
             method,
             headers: { 'Content-Type': 'application/json' },
         }
+        if (token) {
+            options.headers.Authorization = `Bearer ${token}`;
+        }
 
         if (method !== "GET" && data) {
-            obtions.body = JSON.stringify(data);
+            options.body = JSON.stringify(data);
         }
-        const res = await fetch(url, obtions)
+        const res = await fetch(url, options)
 
 
         if (!res.ok) {
