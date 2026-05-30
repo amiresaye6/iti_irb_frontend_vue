@@ -48,9 +48,9 @@ export const applicationServices = () => {
         return useApi(apiOptions)
     }
 
-    const get_ApprovedByReviewer_Apps = (setLoading,setError) =>{
+    const get_final_review_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/applications/approved_by_reviewer`,
+            url : `${Base_url}/applications/final_review`,
             method : 'GET',
             data : null,
             setLoading,
@@ -188,11 +188,34 @@ export const applicationServices = () => {
         return useApi(apiOptions)
     }
 
-    return{getAllApplications,
+    const askForModification = (appId,setLoading,setError) =>{
+        const apiOptions = {
+            url : `${Base_url}/applications/${appId}/ask-for-modification`,
+            method : 'POST',
+            data : null,
+            setLoading,
+            setError
+        }
+        return useApi(apiOptions)
+    }
+
+    const askForReview_afterModification = (appId,setLoading,setError) =>{
+        const apiOptions = {
+            url : `${Base_url}/applications/${appId}/ask-for-review`,
+            method : 'POST',
+            data : null,
+            setLoading,
+            setError
+        }
+        return useApi(apiOptions)
+    }
+
+    return{
+        getAllApplications,
         postApplication,
         get_PendingAdmin_Apps,
         get_UnderReview_Apps,
-        get_ApprovedByReviewer_Apps,
+        get_final_review_Apps,
         get_AwaitingPayment_Apps,
         get_Approved_Apps,
         get_Rejected_Apps,
@@ -204,5 +227,7 @@ export const applicationServices = () => {
         toNextStage,
         getDocsByAppId,
         getDocById,
+        askForModification,
+        askForReview_afterModification
     }
 }
