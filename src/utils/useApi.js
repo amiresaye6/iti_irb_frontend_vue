@@ -13,7 +13,7 @@ export const useApi = async (
         const token = localStorage.getItem('token');
         const options = {
             method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         }
         if (token) {
             options.headers.Authorization = `Bearer ${token}`;
