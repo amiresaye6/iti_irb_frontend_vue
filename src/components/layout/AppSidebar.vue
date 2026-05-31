@@ -56,14 +56,11 @@
 
         <div class="p-4 border-t border-white/5 mt-auto">
             <div :class="[!isExpanded ? 'tooltip tooltip-left w-full' : 'w-full']" data-tip="تسجيل الخروج">
-                <button
+                 <button
                     class="flex items-center w-full rounded-2xl transition-all duration-200 hover:bg-error/20 hover:text-error text-neutral-content/80 group"
-                    :class="isExpanded ? 'px-4 py-3 gap-4 justify-start' : 'justify-center w-14 h-14 mx-auto'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 shrink-0 rotate-180" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
+                    :class="isExpanded ? 'px-4 py-3 gap-4 justify-start' : 'justify-center w-14 h-14 mx-auto'" 
+                    :disabled="authStore.loading" 
+                    @click="handleLogout">
                     <span v-if="isExpanded" class="whitespace-nowrap text-sm font-medium">تسجيل الخروج</span>
                 </button>
             </div>
@@ -73,6 +70,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth/auth.store'
 
 const props = defineProps({
     isExpanded: {
@@ -82,7 +81,13 @@ const props = defineProps({
 })
 
 defineEmits(['toggle'])
+const router    = useRouter()
+const authStore = useAuthStore()
 
+const handleLogout = async () => {
+    await authStore.logout()
+    router.push('/login')
+}
 // Data-driven links mapping exact icons from your screenshots
 const navLinks = ref([
     {
