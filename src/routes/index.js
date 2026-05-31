@@ -37,6 +37,20 @@ const routes = [
         name: 'NotFound',
         component: () => import('../views/global/NotFoundView.vue'),
         meta: { layout: 'landing' }
+    },
+
+    // --- student pages ---
+    {
+        path: '/student/dashboard',
+        name: "Student Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/Dashboard.vue')
+    },
+    {
+        path: '/applications/:id',
+        name: "Application Details",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/ApplicationDetails.vue')
     }
 ]
 
