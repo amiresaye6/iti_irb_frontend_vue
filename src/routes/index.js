@@ -22,6 +22,12 @@ const routes = [
         meta: { layout: 'auth' },
         component: () => import('../views/global/LoginView.vue')
     },
+    {
+    path: '/register',
+    name: 'Register',
+    meta: { layout: 'auth' },
+    component: () => import('../views/global/RegisterView.vue')
+    },
 
     // --- Main System Pages ---
     {
@@ -30,6 +36,34 @@ const routes = [
         meta: { layout: 'main' },
         component: () => import('../views/global/ComponentsShowcase.vue')
     },
+    // --- student ---
+    {
+    path: '/profile',
+    name: 'Profile',
+    meta: { layout: 'main' },
+    component: () => import('../views/student/ProfileView.vue')
+   },
+
+
+// --- Admin ---
+   {
+    path: '/admin/add-staff',
+    name: 'AddStaff',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/AddStaffView.vue')
+   },
+   {
+    path: '/admin/users',
+    name: 'AllUsers',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/AllUsersView.vue')
+  },
+  {
+    path: '/admin/pending-students',
+    name: 'PendingStudents',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/PendingStudentsView.vue')
+   },
 
     {
         // Catch-all route for any undefined paths
