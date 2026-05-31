@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { loginUser, logoutUser, getProfile } from '../../services/authService';
-
+import { useApi } from '../../utils/useApi';
 export const useAuthStore = defineStore('auth', () => {
 
     const user    = ref(JSON.parse(localStorage.getItem('user')) || null);
@@ -59,11 +59,22 @@ export const useAuthStore = defineStore('auth', () => {
             localStorage.setItem('user', JSON.stringify(user.value));
         }
     };
+    const register = async (payload) => {
+    errorMessage.value = null;
+    const res = await useApi({
+        url: `${import.meta.env.VITE_BACKEND_SERVER}/register`,
+        method: 'POST',
+        data: payload,
+        setLoading,
+        setError,
+    });
+    return res;
+};
 
     return {
         user, token, loading, errorMessage,
         isAuthenticated, userRole,
         isAdmin, isStudent, isReviewer, isManager,
-        login, logout, fetchProfile, clearSession,
+        login, logout, fetchProfile, clearSession, register
     };
 });

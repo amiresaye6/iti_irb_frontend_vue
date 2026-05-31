@@ -1,6 +1,6 @@
 import { useApi } from '../utils/useApi';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_SERVER;
 
 export const loginUser = ({ data, setLoading, setError }) =>
     useApi({
@@ -10,7 +10,6 @@ export const loginUser = ({ data, setLoading, setError }) =>
         setLoading,
         setError,
     });
-
 export const logoutUser = ({ setLoading, setError }) =>
     useApi({
         url: `${BASE_URL}/auth/logout`,
@@ -18,6 +17,7 @@ export const logoutUser = ({ setLoading, setError }) =>
         setLoading,
         setError,
     });
+
 
 export const forgotPassword = ({ data, setLoading, setError }) =>
     useApi({
@@ -61,6 +61,7 @@ export const getPendingUsers = ({ setLoading, setError }) =>
         setLoading,
         setError,
     });
+
 
 export const getAllUsers = ({ setLoading, setError }) =>
     useApi({
