@@ -15,7 +15,7 @@ const currentLayout = computed(() => {
     case 'main': return MainLayout
     case 'auth': return AuthLayout
     case 'landing': return LandingLayout
-    default: return LandingLayou
+    default: return LandingLayout
   }
 })
 </script>
