@@ -60,6 +60,10 @@
 
 
 
+*, *::before, *::after {
+  font-family: 'Cairo', sans-serif !important;
+}
+
 html {
   scroll-behavior: smooth;
   /* Use overlay to make the scrollbar float on top without taking up layout space */

@@ -30,7 +30,7 @@ const routes = [
         meta: { layout: 'main', requiresAuth: true },
         component: () => import('../views/global/ComponentsShowcase.vue')
     },
-    
+
     // --- Student Payment Pages ---
     {
         path: '/student/payments/pending',
@@ -47,7 +47,7 @@ const routes = [
     {
         path: '/student/payments/receipt/:id',
         name: "Payment Receipt",
-        meta: { layout: 'main', requiresAuth: true, role: 'student' },
+        meta: { layout: 'main', requiresAuth: true, role: ['student', 'admin', 'manager'] },
         component: () => import('../views/student/PaymentReceipt.vue')
     },
     {
@@ -55,6 +55,21 @@ const routes = [
         name: "Payment Status Callback",
         meta: { layout: 'main', requiresAuth: true },
         component: () => import('../views/student/PaymentStatusCallback.vue')
+    },
+
+    // --- Admin / Manager Payment Pages ---
+    {
+        path: '/admin/payments',
+        name: "Admin Payments Dashboard",
+        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager'] },
+        component: () => import('../views/admin/AdminPaymentsDashboard.vue')
+    },
+    {
+        path: '/admin/payments/set-fee/:id',
+        alias: '/admin/set-fee/:id',
+        name: "Set Payment Fee",
+        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager'] },
+        component: () => import('../views/admin/SetPaymentFee.vue')
     },
 
     {
@@ -87,9 +102,12 @@ router.beforeEach((to, from, next) => {
         return next('/dashboard');
     }
 
-    // If route requires a specific role
-    if (to.meta.role && user?.role !== to.meta.role) {
-        return next('/dashboard');
+    // If route requires a specific role (supports string or array)
+    if (to.meta.role) {
+        const allowedRoles = Array.isArray(to.meta.role) ? to.meta.role : [to.meta.role];
+        if (!allowedRoles.includes(user?.role)) {
+            return next('/dashboard');
+        }
     }
 
     next();

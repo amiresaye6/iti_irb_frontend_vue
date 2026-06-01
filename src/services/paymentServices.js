@@ -65,11 +65,38 @@ export const paymentServices = () => {
         return useApi(apiOptions)
     }
 
+    // --- Admin / Manager endpoints ---
+
+    const getAdminDashboard = (queryParams = {}, setLoading, setError) => {
+        const queryStr = new URLSearchParams(filterParams(queryParams)).toString();
+        const apiOptions = {
+            url: `${Base_url}/payments/admin${queryStr ? '?' + queryStr : ''}`,
+            method: 'GET',
+            data: null,
+            setLoading,
+            setError
+        }
+        return useApi(apiOptions)
+    }
+
+    const setPaymentFee = (applicationId, amount, setLoading, setError) => {
+        const apiOptions = {
+            url: `${Base_url}/payments/set-fee/${applicationId}`,
+            method: 'POST',
+            data: { amount },
+            setLoading,
+            setError
+        }
+        return useApi(apiOptions)
+    }
+
     return {
         getPendingPayments,
         getPaymentHistory,
         getPaymentReceipt,
         initiateCheckout,
-        verifyPaymentStatus
+        verifyPaymentStatus,
+        getAdminDashboard,
+        setPaymentFee
     }
 }
