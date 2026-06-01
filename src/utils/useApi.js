@@ -1,3 +1,5 @@
+import router from '@/routes/index'
+
 export const useApi = async (
     {
         url,
@@ -13,7 +15,10 @@ export const useApi = async (
         const token = localStorage.getItem('token');
         const options = {
             method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
         }
         if (token) {
             options.headers.Authorization = `Bearer ${token}`;
@@ -24,6 +29,11 @@ export const useApi = async (
         }
         const res = await fetch(url, options)
 
+        // Redirect to unauthorized page for 401/403
+        if (res.status === 401 || res.status === 403) {
+            router.push({ name: 'Unauthorized' });
+            return null;
+        }
 
         if (!res.ok) {
             const errData = await res.json();
@@ -36,4 +46,4 @@ export const useApi = async (
     } finally {
         setLoading(false);
     }
-}
+}
