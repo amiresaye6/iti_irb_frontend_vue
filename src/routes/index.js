@@ -22,6 +22,12 @@ const routes = [
         meta: { layout: 'auth' },
         component: () => import('../views/global/LoginView.vue')
     },
+    {
+    path: '/register',
+    name: 'Register',
+    meta: { layout: 'auth' },
+    component: () => import('../views/global/RegisterView.vue')
+    },
 
     // --- Main System Pages ---
     {
@@ -76,6 +82,34 @@ const routes = [
         meta: { layout: 'main' },
         component: () => import('../views/notifications/NotificationDetails.vue')
     },
+    // --- student ---
+    {
+    path: '/profile',
+    name: 'Profile',
+    meta: { layout: 'main' },
+    component: () => import('../views/student/ProfileView.vue')
+   },
+
+
+// --- Admin ---
+   {
+    path: '/admin/add-staff',
+    name: 'AddStaff',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/AddStaffView.vue')
+   },
+   {
+    path: '/admin/users',
+    name: 'AllUsers',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/AllUsersView.vue')
+  },
+  {
+    path: '/admin/pending-students',
+    name: 'PendingStudents',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/PendingStudentsView.vue')
+   },
 
     // --- Error Pages ---
     {
@@ -90,6 +124,20 @@ const routes = [
         name: 'NotFound',
         component: () => import('../views/global/NotFoundView.vue'),
         meta: { layout: 'landing' }
+    },
+
+    // --- student pages ---
+    {
+        path: '/student/dashboard',
+        name: "Student Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/Dashboard.vue')
+    },
+    {
+        path: '/applications/:id',
+        name: "Application Details",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/ApplicationDetails.vue')
     }
 ]
 

@@ -46,4 +46,4 @@ export const useApi = async (
     } finally {
         setLoading(false);
     }
-}
+}
