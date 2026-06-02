@@ -141,7 +141,7 @@ export const applicationServices = () => {
     const patchAppById = (appId,appData,setLoading,setError) =>{
         const apiOptions = {
             url : `${Base_url}/applications/${appId}`,
-            method : 'PATCH',
+            method : 'POST',
             data : appData,
             setLoading,
             setError

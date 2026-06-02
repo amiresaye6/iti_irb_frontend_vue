@@ -72,7 +72,7 @@ const getStageName = (stage) => {
 <template>
     <div class="max-w-6xl mx-auto px-4 py-8 space-y-8 w-full font-sans">
         
-        <div class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
+        <div v-if="!application?.needs_modification" class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
             <div class="flex items-center gap-4">
                 <div class="bg-primary/10 p-3 rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -90,6 +90,27 @@ const getStageName = (stage) => {
                 </svg>
                 العودة
             </button>
+        </div>
+        <div v-if="application?.needs_modification" class="flex items-center justify-between bg-yellow-300 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
+            <div class="flex items-center gap-4">
+                <div class="bg-primary/10 p-3 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86l-8.2 14.24A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.41-2.1l-8.2-14.04a1.5 1.5 0 00-2.42 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-base-content">هذا الطلب يحتاج إلى تعديل</h1>
+                    <p class="text-sm text-base-content/60 mt-1">يمكنك مراجعة الاشعارات لمعرفة التعديلات المطلوبة </p>
+                </div>
+            </div>
+            <button @click="router.push('/student/dashboard')" class="btn btn-outline hover:btn-primary border-base-300 gap-2 px-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                العودة للوحة التحكم
+            </button>
+            
         </div>
 
         <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-base-100 rounded-2xl border border-base-200/60 shadow-sm">
@@ -208,7 +229,6 @@ const getStageName = (stage) => {
                                 
                                 <div>
                                     <h3 class="font-bold text-base-content text-lg">{{ getDocumentName(doc.document_type) }}</h3>
-                                    <p class="text-sm text-base-content/50 mt-1 font-mono" dir="ltr">{{ doc.file_path.split('/').pop() || 'مستند' }}</p>
                                 </div>
                             </div>
 
@@ -236,4 +256,22 @@ const getStageName = (stage) => {
             
         </div>
     </div>
+    <div v-if="application?.needs_modification" class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
+            <div class="flex items-center gap-4">
+                <div class="bg-primary/10 p-3 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-base-content">الانتقال الى صفحة التعديل </h1>
+                </div>
+            </div>
+            <button @click="router.push(`/student/edit-application/${application.id}`)" class="btn btn-primary hover:btn-primary border-base-300 gap-2 px-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                تعديل الطلب
+            </button>
+        </div>
 </template>

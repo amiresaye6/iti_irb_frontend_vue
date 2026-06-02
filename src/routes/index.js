@@ -145,6 +145,18 @@ const routes = [
         meta: { layout: 'main' },
         component: () => import('../views/student/accepted.vue')
     },
+    {
+        path: '/student/edit-application/:id',
+        name: "Edit-application",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/edit-application.vue')
+    },
+    {
+        path: '/student/accept-modification',
+        name: "Accept Modification",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/accept-modification.vue')
+    },
 ]
 
 const router = createRouter({
