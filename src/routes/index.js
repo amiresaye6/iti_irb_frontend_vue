@@ -116,10 +116,16 @@ const routes = [
 
     // --- student pages ---
     {
-        path: '/student/dashboard',
+        path: '/student/Dashboard',
         name: "Student Dashboard",
         meta: { layout: 'main' },
         component: () => import('../views/student/Dashboard.vue')
+    },
+    {
+        path: '/student/my-researches',
+        name: "Student my-researches",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/my-researches.vue')
     },
     {
         path: '/applications/:id',

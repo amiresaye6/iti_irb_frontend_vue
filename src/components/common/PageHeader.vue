@@ -40,7 +40,7 @@
           </div>
           {{ title }}
         </h1>
-        <p v-if="note" class="text-sm text-base-content/60 mt-1">{{ note }}</p>
+        <p v-if="note" class="text-sm text-base-content/60 mt-1 whitespace-pre-line">{{ note }}</p>
       </div>
     </div>
 
