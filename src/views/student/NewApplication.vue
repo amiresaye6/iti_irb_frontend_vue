@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { applicationServices } from '@/services/applicationServices.js'
-
+import { useRouter } from 'vue-router'
 const appServices = applicationServices();
+const router = useRouter();
 
 const isLoading = ref(false);
 const errorMessage = ref(null);
@@ -167,21 +168,27 @@ const Apply = async () => {
         .map(k => k.trim())
         .join('، ');
 
-    const application = {
-        title: title.value.trim(),
-        principal_investigator: principal_investigator.value.trim(),
-        co_investigators: co_investigators_str,
-        keywords: keywords_str,
-        ...files.value
-    };
+    const formData = new FormData();
+    
+    formData.append('title', title.value.trim());
+    formData.append('principal_investigator', principal_investigator.value.trim());
+    formData.append('co_investigators', co_investigators_str);
+    formData.append('keywords', keywords_str);
 
-    console.log("application", application);
+    for (const key in files.value) {
+        if (files.value[key]) {
+            formData.append(key, files.value[key]);
+        }
+    }
 
     const data = await appServices.postApplication(
-        application,
+        formData,
         setLoading,
         setError
     );
+    if(data){
+        router.push('/student/accepted/' + data.serial_number);
+    }
 };
 </script>
 

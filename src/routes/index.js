@@ -139,6 +139,12 @@ const routes = [
         meta: { layout: 'main' },
         component: () => import('../views/student/NewApplication.vue')
     },
+    {
+        path: '/student/accepted/:serial_number',
+        name: "Accepted Application",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/accepted.vue')
+    },
 ]
 
 const router = createRouter({

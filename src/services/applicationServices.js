@@ -22,6 +22,7 @@ export const applicationServices = () => {
             setLoading,
             setError
         }
+        console.log("Posting application with data:", applicationData);
         return useApi(apiOptions)
     }
 
