@@ -126,7 +126,13 @@ const routes = [
         name: "Application Details",
         meta: { layout: 'main' },
         component: () => import('../views/student/ApplicationDetails.vue')
-    }
+    },
+    {
+        path: '/student/new-application',
+        name: "New Application",
+        meta: { layout: 'main' },
+        component: () => import('../views/student/NewApplication.vue')
+    },
 ]
 
 const router = createRouter({
