@@ -1,14 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
-import { applicationServices } from '@/services/applicationServices.js'
 
-const Base_url = import.meta.env.VITE_BACKEND_SERVER;
-const appServices = applicationServices();
+
 const route = useRoute();
 const router = useRouter();
-const serialNumber = route.params.serial_number;
-
+onMounted(() => {
+    if (!history.state || !history.state.fromSubmission) {
+        router.replace('/student/dashboard');
+    }
+});
+const serialNumber = history.state?.serialNumber || 'غير متوفر';
 const goToDashboard = () => {
     router.push('/student/dashboard');
 };

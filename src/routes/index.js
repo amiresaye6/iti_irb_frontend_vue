@@ -140,7 +140,7 @@ const routes = [
         component: () => import('../views/student/NewApplication.vue')
     },
     {
-        path: '/student/accepted/:serial_number',
+        path: '/student/accepted',
         name: "Accepted Application",
         meta: { layout: 'main' },
         component: () => import('../views/student/accepted.vue')

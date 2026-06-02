@@ -187,7 +187,13 @@ const Apply = async () => {
         setError
     );
     if(data){
-        router.push('/student/accepted/' + data.serial_number);
+        router.push({
+            path: '/student/accepted',
+            state: {
+                fromSubmission: true,
+                serialNumber: data.serial_number
+            }
+        });
     }
 };
 </script>
