@@ -1,6 +1,8 @@
 import { useApi } from "@/utils/useApi";
 
 const Base_url = import.meta.env.VITE_BACKEND_SERVER;
+const Docs_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+
 export const applicationServices = () => {
     // applications APIs
     const getAllApplications = (setLoading,setError) => {

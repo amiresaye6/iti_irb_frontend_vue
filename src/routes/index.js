@@ -36,14 +36,6 @@ const routes = [
         meta: { layout: 'main', requiresAuth: true },
         component: () => import('../views/global/ComponentsShowcase.vue')
     },
-    // --- student ---
-    {
-    path: '/profile',
-    name: 'Profile',
-    meta: { layout: 'main' },
-    component: () => import('../views/student/ProfileView.vue')
-   },
-
 
 // --- Admin ---
    {
@@ -105,7 +97,13 @@ const routes = [
         meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager'] },
         component: () => import('../views/admin/SetPaymentFee.vue')
     },
-
+    {
+        // logs page
+        path: '/logs',
+        name: 'Logs',
+        component: () => import('../views/admin/logs.vue'),
+        meta: { layout: 'main', requiresAuth: true, role: ['admin','manager','super_admin'] }
+    },
     {
         // Catch-all route for any undefined paths
         path: '/:pathMatch(.*)*',
@@ -113,48 +111,55 @@ const routes = [
         component: () => import('../views/global/NotFoundView.vue'),
         meta: { layout: 'landing' }
     },
+    
 
     // --- student pages ---
     {
+    path: '/profile',
+    name: 'Profile',
+    meta: { layout: 'main' },
+    component: () => import('../views/student/ProfileView.vue')
+    },
+    {
         path: '/student/Dashboard',
         name: "Student Dashboard",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/Dashboard.vue')
     },
     {
         path: '/student/my-researches',
         name: "Student my-researches",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/my-researches.vue')
     },
     {
-        path: '/applications/:id',
+        path: '/student/applications/:id',
         name: "Application Details",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/ApplicationDetails.vue')
     },
     {
         path: '/student/new-application',
         name: "New Application",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/NewApplication.vue')
     },
     {
         path: '/student/accepted',
         name: "Accepted Application",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/accepted.vue')
     },
     {
         path: '/student/edit-application/:id',
         name: "Edit-application",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/edit-application.vue')
     },
     {
         path: '/student/accept-modification',
         name: "Accept Modification",
-        meta: { layout: 'main' },
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/accept-modification.vue')
     },
 ]

@@ -4,6 +4,9 @@ import { useRoute,useRouter } from 'vue-router'
 import { applicationServices } from '@/services/applicationServices.js'
 
 const Base_url = import.meta.env.VITE_BACKEND_SERVER;
+const Docs_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+
+
 const appServices = applicationServices();
 const route = useRoute();
 const router = useRouter();
@@ -51,7 +54,7 @@ const documentTranslations = {
 };
 
 const stageTranslations = {
-    'pending_admin': 'في انتظار الإدارة',
+    'pending_admin': 'مراجعة اولية',
     'under_review': 'قيد المراجعة',
     'final_review': 'المراجعة النهائية',
     'awaiting_payment': 'في انتظار الدفع',
@@ -233,7 +236,7 @@ const getStageName = (stage) => {
                             </div>
 
                             <a 
-                                :href="`${Base_url}/storage/${doc.file_path}`" 
+                                :href="`${Docs_BASE_URL}storage/${doc.file_path}`" 
                                 target="_blank"
                                 class="btn btn-primary btn-sm px-8 h-10 font-bold w-full sm:w-auto shadow-sm"
                             >

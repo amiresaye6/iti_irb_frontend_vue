@@ -66,7 +66,7 @@ const getStageBadgeColor = (stage) => {
 };
 
 const goToDetails = (appId) => {
-    router.push(`/applications/${appId}`)
+    router.push(`/student/applications/${appId}`)
     console.log("الذهاب لتفاصيل الطلب رقم:", appId);
 };
 </script>
