@@ -181,7 +181,7 @@ export const applicationServices = () => {
 
     const getDocById = (docId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/Documents/${docId}`,
+            url : `${Docs_BASE_URL}/Documents/${docId}`,
             method : 'GET',
             data : null,
             setLoading,
