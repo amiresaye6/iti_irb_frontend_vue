@@ -155,7 +155,7 @@
     <div
       class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm transition-all flex flex-col items-center">
 
-      <div v-if="selectedMode === 'free'" class="w-full max-w-md space-y-5 text-center">
+      <!-- <div v-if="selectedMode === 'free'" class="w-full max-w-md space-y-5 text-center">
         <div class="text-sm text-gray-500 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
           يرجى تأكيد إعفاء الباحث لطلب البحث رقم <strong class="text-gray-800">(#{{ appId }})</strong> من الرسوم
           بالكامل.<br /> سيتم قيد المعاملة بقيمة <strong class="text-green-600">(0.00 EGP)</strong> وسيتم ترحيل الطلب
@@ -184,6 +184,49 @@
         </div>
 
         <button @click="submitFee(customAmount)"
+          class="btn btn-primary w-full h-12 rounded-xl font-bold shadow-md shadow-primary/10 hover:shadow-primary/20 transition-all gap-2"
+          :disabled="isSubmitting || !customAmount || customAmount <= 0">
+          <span v-if="isSubmitting" class="loading loading-spinner"></span>
+          <span v-else>حفظ المعاملة وتحديد الرسوم</span>
+        </button>
+      </div> -->
+       <div v-if="selectedMode === 'free'" class="w-full max-w-md space-y-5 text-center">
+        <div class="text-sm text-gray-500 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
+          يرجى تأكيد إعفاء الباحث لطلب البحث رقم <strong class="text-gray-800">(#{{ appId }})</strong> من الرسوم
+          بالكامل.<br /> سيتم قيد المعاملة بقيمة <strong class="text-green-600">(0.00 EGP)</strong> وسيتم ترحيل الطلب
+          مباشرة للموافقة.
+        </div>
+
+        <div v-if="userRole === 'super_admin'" class="p-3.5 bg-base-100 text-base-content/50 border border-base-200/60 rounded-xl text-sm font-semibold">
+          وضع المعاينة (سوبر أدمن): غير متاح لك حفظ الإعفاء
+        </div>
+
+        <button v-else @click="submitFee(0)"
+          class="btn btn-success text-white w-full h-12 rounded-xl font-bold shadow-md shadow-green-100 hover:shadow-green-200 transition-all gap-2"
+          :disabled="isSubmitting">
+          <span v-if="isSubmitting" class="loading loading-spinner"></span>
+          <span v-else>حفظ المعاملة كإعفاء كامل</span>
+        </button>
+      </div>
+
+      <div v-else-if="selectedMode === 'custom'" class="w-full max-w-md space-y-5">
+        <div class="form-control w-full">
+          <label class="label pt-0 pb-2">
+            <span class="label-text font-bold text-gray-700 text-sm">مبلغ الرسوم المطلوب سداده (بالجنيه المصري EGP)</span>
+          </label>
+          <div class="relative">
+            <input type="number" v-model="customAmount" required min="1" step="0.01" placeholder="مثال: 1500"
+              class="input input-bordered w-full pr-12 text-lg focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl"
+              :disabled="isSubmitting || userRole === 'super_admin'" />
+            <div class="absolute right-4 top-3.5 text-gray-400 font-bold text-sm">EGP</div>
+          </div>
+        </div>
+
+        <div v-if="userRole === 'super_admin'" class="p-3.5 bg-base-100 text-base-content/50 border border-base-200/60 text-center rounded-xl text-sm font-semibold">
+          وضع المعاينة (سوبر أدمن): غير متاح لك تعديل أو حفظ الرسوم
+        </div>
+
+        <button v-else @click="submitFee(customAmount)"
           class="btn btn-primary w-full h-12 rounded-xl font-bold shadow-md shadow-primary/10 hover:shadow-primary/20 transition-all gap-2"
           :disabled="isSubmitting || !customAmount || customAmount <= 0">
           <span v-if="isSubmitting" class="loading loading-spinner"></span>
@@ -294,9 +337,12 @@ const formatAmount = (amount) => {
   if (!amount && amount !== 0) return '0.00';
   return Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
-
+const userRole = ref('');
 onMounted(() => {
   appId.value = route.params.id;
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+  userRole.value = user?.role || '';
 });
 </script>
 
