@@ -8,6 +8,7 @@ const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 const allStudents   = ref([]);
 const isLoading     = ref(false);
 const errorMessage  = ref(null);
+const userRole = ref('');
 
 const setLoading = (val) => (isLoading.value = val);
 const setError   = (err) => (errorMessage.value = err ? (err.message || err) : null);
@@ -91,7 +92,12 @@ const fetchStudents = async () => {
     }
 };
 
-onMounted(fetchStudents);
+onMounted(async () => {
+    await fetchStudents();
+    const userStr = localStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+    userRole.value = user?.role || '';
+});
 
 const previewStudent = ref(null);
 const showPreview    = ref(false);
@@ -105,6 +111,7 @@ const closePreview = () => (showPreview.value = false);
 const actionLoadingId = ref(null);
 
 const handleActivate = async (student) => {
+    if (userRole.value === 'super_admin') return;
     actionLoadingId.value = student.id;
     const res = await activateUser({
         id: student.id,
@@ -119,7 +126,8 @@ const handleActivate = async (student) => {
 };
 
 const handleDelete = async (student) => {
-    if (!confirm(`هل أنت متأكد من حذف حساب "${student.name}"؟`)) return;
+    if (userRole.value === 'super_admin') return;
+    if (!confirm(`هل أنت متأكد من حذف حساب ؟`)) return;
     actionLoadingId.value = student.id;
     const res = await deleteUser({
         id: student.id,
@@ -220,7 +228,7 @@ const handleDelete = async (student) => {
             </template>
 
             <!-- Row actions -->
-            <template #row-actions="{ item }">
+            <!-- <template #row-actions="{ item }">
                 <div class="flex items-center gap-2">
                     <button
                         class="btn btn-xs btn-success gap-1"
@@ -248,7 +256,36 @@ const handleDelete = async (student) => {
                         حذف
                     </button>
                 </div>
-            </template>
+            </template> -->
+            <template #row-actions="{ item }">
+    <span v-if="userRole === 'super_admin'" class="text-xs text-base-content/40 font-medium px-2">
+        وضع المعاينة
+    </span>
+
+    <div v-else class="flex items-center gap-2">
+        <button
+            class="btn btn-xs btn-success gap-1"
+            :disabled="actionLoadingId === item.id"
+            @click="handleActivate(item)"
+        >
+            <span v-if="actionLoadingId === item.id" class="loading loading-spinner loading-xs"></span>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            تفعيل
+        </button>
+        <button
+            class="btn btn-xs btn-error btn-outline gap-1"
+            :disabled="actionLoadingId === item.id"
+            @click="handleDelete(item)"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            حذف
+        </button>
+    </div>
+</template>
         </DataTable>
 
         <!-- ── ID Preview Modal ─────────────────────────── -->
@@ -312,7 +349,7 @@ const handleDelete = async (student) => {
                     </div>
 
                     <!-- Modal Actions -->
-                    <div class="p-6 flex items-center justify-end gap-3">
+                    <!-- <div class="p-6 flex items-center justify-end gap-3">
                         <button class="btn btn-ghost" @click="closePreview">إلغاء</button>
                         <button
                             class="btn btn-error btn-outline gap-2"
@@ -339,6 +376,36 @@ const handleDelete = async (student) => {
                             </svg>
                             تفعيل الحساب
                         </button>
+                    </div> -->
+                    <div class="p-6 flex items-center justify-end gap-3">
+                        <button v-if="userRole === 'super_admin'" class="btn btn-primary btn-sm rounded-xl px-6" @click="closePreview">
+                            إغلاق المعاينة
+                        </button>
+
+                        <template v-else>
+                            <button class="btn btn-ghost" @click="closePreview">إلغاء</button>
+                            <button
+                                class="btn btn-error btn-outline gap-2"
+                                :disabled="actionLoadingId === previewStudent?.id"
+                                @click="handleDelete(previewStudent)"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                حذف الحساب
+                            </button>
+                            <button
+                                class="btn btn-success gap-2"
+                                :disabled="actionLoadingId === previewStudent?.id"
+                                @click="handleActivate(previewStudent)"
+                            >
+                                <span v-if="actionLoadingId === previewStudent?.id" class="loading loading-spinner loading-sm"></span>
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                تفعيل الحساب
+                            </button>
+                        </template>
                     </div>
 
                 </div>
