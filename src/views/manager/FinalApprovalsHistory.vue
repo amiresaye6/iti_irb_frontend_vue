@@ -2,26 +2,26 @@
   <div class="p-6 min-h-screen text-base-content" dir="rtl">
     
     <PageHeader 
-      title="لوحة تحكم المدير " 
-      note="متابعة الأبحاث الجاهزة للاعتماد النهائي ."
+      title="سجل الأبحاث المعتمدة نهائياً" 
+      note="عرض الأرشيف الكامل لكافة الأبحاث والطلبات التي تم اعتمادها والموافقة عليها من قِبلكم."
     >
       <template #icon>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </template>
     </PageHeader>
 
     <FilterDock 
       :config="[
-        { key: 'search', type: 'text', label: 'البحث السريع', placeholder: 'ابحث برقم البحث أو عنوان البحث...' }
+        { key: 'search', type: 'text', label: 'بحث في الأرشيف', placeholder: 'ابحث برقم البحث أو العنوان...' }
       ]"
       @filter="handleFilter"
     />
 
     <div v-if="error" class="alert alert-error shadow-lg my-4 max-w-xl mx-auto">
       <div>
-        <span>حدث خطأ أثناء تحميل أبحاث الداش بورد: {{ error.message || error }}</span>
+        <span>حدث خطأ أثناء تحميل السجل: {{ error.message || error }}</span>
       </div>
     </div>
 
@@ -37,7 +37,7 @@
         @page-change="handlePageChange"
       >
         <template #cell(serial_number)="{ item }">
-          <span class="font-bold text-primary">{{ item.serial_number }}</span>
+          <span class="font-bold text-success">{{ item.serial_number }}</span>
         </template>
 
         <template #cell(title)="{ item }">
@@ -45,28 +45,19 @@
         </template>
 
         <template #cell(student_name)="{ item }">
-          <span class="text-base-content">{{ item.student?.full_name || 'N/A' }}</span>
+          {{ item.student?.full_name || 'N/A' }}
         </template>
 
         <template #cell(status)="{}">
-          <div class="badge badge-warning gap-2 py-3 px-4 font-semibold text-white">
+          <div class="badge badge-success gap-2 py-3 px-4 font-semibold text-white">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
-            قيد مراجعة المدير
+            معتمد نهائياً
           </div>
         </template>
 
-        <template #cell(actions)="{ item }">
-          <div class="flex justify-center w-full">
-            <button 
-              @click="goToDecision(item.id)" 
-              class="btn btn-primary btn-sm text-white font-medium shadow-sm gap-1 transition-all hover:scale-105"
-            >
-              ⚖️ مراجعة واعتماد
-            </button>
-          </div>
-        </template>
+      
       </DataTable>
     </div>
 
@@ -82,7 +73,7 @@ import FilterDock from '@/components/common/FilterDock.vue';
 import DataTable from '@/components/common/DataTable.vue';
 import trackMount from '@/utils/mountTracker';
 
-trackMount('ManagerDashboard');
+trackMount('ManagerFinalApprovalsHistory');
 
 const router = useRouter();
 
@@ -98,18 +89,17 @@ const searchQuery = ref('');
 
 const tableColumns = ref([
   { key: 'serial_number', label: 'رقم البحث', sortable: false },
-  { key: 'title', label: 'عنوان البحث', sortable: false},
+  { key: 'title', label: 'عنوان البحث', sortable: false },
   { key: 'student_name', label: 'اسم الباحث', sortable: false },
-  { key: 'status', label: 'الحالة الحالية', sortable: false },
-  { key: 'actions', label: 'العمليات', sortable: false, class: 'text-center' }
+  { key: 'status', label: 'الحالة', sortable: false }
 ]);
 
-const loadDashboardData = async () => {
+const loadHistoryData = async () => {
   loading.value = true;
   error.value = null;
   
   try {
-    const result = await managerService.getFinalApprovals(); 
+    const result = await managerService.getFinalApprovalsHistory();
     
     if (result && result.status === 'success' && Array.isArray(result.data)) {
       applications.value = result.data;
@@ -123,14 +113,14 @@ const loadDashboardData = async () => {
     
   } catch (err) {
     error.value = err;
-    console.error('Error in Dashboard:', err);
+    console.error('Error in History Dashboard:', err);
   } finally {
     loading.value = false;
   }
 };
 
 onMounted(() => {
-  loadDashboardData();
+  loadHistoryData();
 });
 
 const handleFilter = (filters) => {
@@ -154,7 +144,4 @@ const handlePageChange = (page) => {
   currentPage.value = page;
 };
 
-const goToDecision = (applicationId) => {
-  router.push(`/manager/decisions/${applicationId}`);
-};
 </script>
