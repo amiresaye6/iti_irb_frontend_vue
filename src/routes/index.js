@@ -30,12 +30,12 @@ const routes = [
     },
 
     // --- Main System Pages ---
-    {
-        path: '/dashboard',
-        name: "Dashboard",
-        meta: { layout: 'main', requiresAuth: true },
-        component: () => import('../views/global/ComponentsShowcase.vue')
-    },
+    // {
+    //     path: '/dashboard',
+    //     name: "Dashboard",
+    //     meta: { layout: 'main', requiresAuth: true },
+    //     component: () => import('../views/global/ComponentsShowcase.vue')
+    // },
 
 // --- Admin ---
    {
@@ -47,13 +47,13 @@ const routes = [
    {
     path: '/admin/users',
     name: 'AllUsers',
-    meta: { layout: 'main', role: 'admin' },
+    meta: { layout: 'main', role: ['admin', 'super_admin'] },
     component: () => import('../views/admin/AllUsersView.vue')
   },
   {
     path: '/admin/pending-students',
     name: 'PendingStudents',
-    meta: { layout: 'main', role: 'admin' },
+    meta: { layout: 'main', role: ['admin', 'super_admin'] },
     component: () => import('../views/admin/PendingStudentsView.vue')
    },
 
@@ -87,14 +87,14 @@ const routes = [
     {
         path: '/admin/payments',
         name: "Admin Payments Dashboard",
-        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager'] },
+        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager', 'super_admin'] },
         component: () => import('../views/admin/AdminPaymentsDashboard.vue')
     },
     {
         path: '/admin/payments/set-fee/:id',
         alias: '/admin/set-fee/:id',
         name: "Set Payment Fee",
-        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager'] },
+        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager', 'super_admin'] },
         component: () => import('../views/admin/SetPaymentFee.vue')
     },
     {
@@ -175,7 +175,13 @@ const routes = [
         name: "Final Approvals",
         meta: { layout: 'main' },
         component: () => import('../views/manager/FinalApprovals.vue')
-    }
+    },
+    {
+    path: '/403',
+    name: 'Forbidden',
+    component: () => import('@/views/global/ForbiddenView.vue'),
+    meta: { layout: 'landing', requiresAuth: true } 
+    },
 ]
 
 const router = createRouter({
@@ -183,27 +189,27 @@ const router = createRouter({
     routes,
 })
 
-// Navigation guard for authentication and role-based access
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
 
-    // If route requires auth and user is not logged in
     if (to.meta.requiresAuth && !token) {
         return next('/login');
     }
 
-    // If route is guest-only (like login) and user is logged in
     if (to.meta.guest && token) {
-        return next('/dashboard');
+       if (user?.role === 'super_admin' || user?.role === 'admin') {
+        return next('/admin/users');
+    } else {
+        return next('/student/Dashboard');
+    }
     }
 
-    // If route requires a specific role (supports string or array)
     if (to.meta.role) {
         const allowedRoles = Array.isArray(to.meta.role) ? to.meta.role : [to.meta.role];
         if (!allowedRoles.includes(user?.role)) {
-            return next('/dashboard');
+           return next('/403');
         }
     }
 

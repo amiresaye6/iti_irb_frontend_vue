@@ -354,7 +354,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
                     </svg>
-                    غير متاح
+                   {{ userRole === 'super_admin' ? 'عرض فقط' : 'غير متاح' }}
                   </span>
                 </div>
               </td>
@@ -422,7 +422,7 @@ const filters = ref({
 });
 
 const pagination = ref({ total: 0, page: 1, per_page: 10 });
-
+const userRole = ref('');
 let debounceTimeout = null;
 
 const fetchPayments = async () => {
@@ -492,6 +492,9 @@ const getStatusLabel = (s) => {
 };
 
 onMounted(() => {
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+  userRole.value = user?.role || '';
   fetchPayments();
 });
 </script>

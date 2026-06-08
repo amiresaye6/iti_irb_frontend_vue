@@ -11,7 +11,7 @@ const logsServices = logServices();
 const logs = ref([]);
 const isLoading = ref(false);
 const errorMessage = ref(null);
-
+const userRole = ref('');
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalItems = ref(0);
@@ -87,6 +87,9 @@ const fetchLogs = async (page = 1) => {
 };
 
 onMounted(() => {
+    const userStr = localStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+    userRole.value = user?.role || '';
     fetchLogs(1);
 });
 
@@ -238,7 +241,7 @@ const formatDate = (dateString) => {
                 <span v-else class="text-base-content/40">--</span>
             </template>
 
-            <template #cell(user_id)="{ item }">
+            <!-- <template #cell(user_id)="{ item }">
                 <span v-if="item.user && item.user.full_name">
                     {{ item.user.full_name }}
                 </span>
@@ -247,8 +250,25 @@ const formatDate = (dateString) => {
                     المستخدم #{{ item.user_id }}
                 </span>
                 <span v-else class="text-base-content/40 font-bold">النظام</span>
-            </template>
+            </template> -->
+            <template #cell(user_id)="{ item }">
+             <div v-if="userRole === 'super_admin'" class="flex flex-col gap-0.5">
+             <span class="font-bold text-base-content">
+                {{ item.user?.full_name || 'باحث غير مسجل' }}
+             </span>
+             <span class="text-xs text-primary font-mono">ID: #{{ item.user_id }}</span>
+             </div>
 
+             <div v-else>
+              <span v-if="item.user && item.user.full_name">
+                {{ item.user.full_name }}
+             </span>
+             <span v-else-if="item.user_id">
+                المستخدم #{{ item.user_id }}
+             </span>
+             <span v-else class="text-base-content/40 font-bold">النظام</span>
+            </div>
+            </template>
             <template #cell(created_at)="{ item }">
                 <span class="text-sm text-base-content/80 whitespace-nowrap" dir="ltr">
                     {{ formatDate(item.created_at) }}

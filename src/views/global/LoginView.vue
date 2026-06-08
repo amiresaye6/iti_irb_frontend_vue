@@ -15,15 +15,16 @@ const showPassword = ref(false);
 
 const ROLE_ROUTES = {
     admin:    '/admin/pending-students',
-    student:  '/student/dashboard',
-    reviewer: '/dashboard',
-    manager:  '/dashboard',
+    super_admin: '/admin/users',
+    student:  '/student/Dashboard',
+    reviewer: '/reviewer/Dashboard',
+    manager:  '/manager/Dashboard',
 };
 
 const handleLogin = async () => {
     const role = await authStore.login(form.value);
     if (role) {
-        const target = ROLE_ROUTES[role] ?? '/dashboard';
+        const target = ROLE_ROUTES[role] ?? '/403';
         router.push(target);
     }
 };
@@ -135,14 +136,14 @@ const handleLogin = async () => {
                 </label>
 
                 <!-- Forgot password -->
-                <div class="fieldset-label justify-end mt-2">
+                <!-- <div class="fieldset-label justify-end mt-2">
                     <RouterLink
                         to="/forgot-password"
                         class="text-xs text-primary hover:text-secondary transition-colors link link-hover"
                     >
                         نسيت كلمة المرور؟
                     </RouterLink>
-                </div>
+                </div> -->
             </fieldset>
 
             <!-- Submit -->

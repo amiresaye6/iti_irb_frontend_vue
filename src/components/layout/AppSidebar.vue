@@ -161,6 +161,37 @@ const navLinks = computed(() => {
             icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`
         });
     }
+    else if (role.value === 'super_admin') {
+        links.push({
+            id: 'admin-payments',
+            label: 'إدارة المدفوعات',
+            route: '/admin/payments',
+            badge: 0,
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" /></svg>`
+        });
+        links.push({
+            id: 'logs',
+            label: 'سجل النشاطات',
+            route: '/logs',
+            badge: 0,
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`
+        });
+        links.push({
+            id: 'admin-users',
+            label: 'إدارة المستخدمين',
+            route: '/admin/users',
+            badge: 0,
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20h5v-2a3 3 0 00-5.356-1.857M7 20H6a3 3 0 010-6h5a3 3 0 013 3v1a3 3 0 01-3 3zM16 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`
+        });
+        links.push({
+            id: 'pending-students',
+            label: 'الموافقة على الطلاب',
+            route: '/admin/pending-students',
+            badge: 0,
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`
+        });
+
+    }
 
     links.push({
         id: 'notifications',
