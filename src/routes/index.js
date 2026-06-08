@@ -162,6 +162,20 @@ const routes = [
         meta: { layout: 'main', requiresAuth: true, role: 'student' },
         component: () => import('../views/student/accept-modification.vue')
     },
+
+    // --- Manager Pages ---
+    {
+        path: '/manager/dashboard',
+        name: "Manager Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/Dashboard.vue')
+    },
+    {
+        path: '/manager/final-approvals',
+        name: "Final Approvals",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/FinalApprovals.vue')
+    }
 ]
 
 const router = createRouter({
