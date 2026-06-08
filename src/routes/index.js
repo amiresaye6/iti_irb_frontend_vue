@@ -126,7 +126,78 @@ const routes = [
         name: "Application Details",
         meta: { layout: 'main' },
         component: () => import('../views/student/ApplicationDetails.vue')
-    }
+    },
+    {
+        path: '/student/new-application',
+        name: "New Application",
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
+        component: () => import('../views/student/NewApplication.vue')
+    },
+    {
+        path: '/student/accepted',
+        name: "Accepted Application",
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
+        component: () => import('../views/student/accepted.vue')
+    },
+    {
+        path: '/student/edit-application/:id',
+        name: "Edit-application",
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
+        component: () => import('../views/student/edit-application.vue')
+    },
+    {
+        path: '/student/accept-modification',
+        name: "Accept Modification",
+        meta: { layout: 'main', requiresAuth: true, role: 'student' },
+        component: () => import('../views/student/accept-modification.vue')
+    },
+
+    // --- Manager Pages ---
+    {
+        path: '/manager/dashboard',
+        name: "Manager Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/Dashboard.vue')
+    },
+    {
+        path: '/manager/final-approvals',
+        name: "Final Approvals",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/FinalApprovals.vue')
+    },
+    // --- Reviewer Pages ---
+    {
+        path: '/reviewer/dashboard',
+        name: "Reviewer Dashboard",
+        meta: { layout: 'main', requiresAuth: true, role: 'reviewer' },
+        component: () => import('../views/reviewer/Dashboard.vue')
+    },
+    // --- Dashboard Redirect ---
+    {
+        path: '/dashboard',
+        name: "DashboardRedirect",
+        meta: { requiresAuth: true },
+        beforeEnter: (to, from, next) => {
+            const userStr = localStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            if (user?.role === 'admin' || user?.role === 'super_admin') {
+                return next('/admin/users');
+            } else if (user?.role === 'manager') {
+                return next('/manager/dashboard');
+            } else if (user?.role === 'student') {
+                return next('/student/Dashboard');
+            } else if (user?.role === 'reviewer') {
+                return next('/reviewer/dashboard');
+            }
+            next('/login');
+        }
+    },
+    {
+    path: '/403',
+    name: 'Forbidden',
+    component: () => import('@/views/global/ForbiddenView.vue'),
+    meta: { layout: 'landing', requiresAuth: true } 
+    },
 ]
 
 const router = createRouter({
