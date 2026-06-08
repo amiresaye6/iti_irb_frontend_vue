@@ -51,6 +51,20 @@ const routes = [
         name: "Application Details",
         meta: { layout: 'main' },
         component: () => import('../views/student/ApplicationDetails.vue')
+    },
+
+    // --- Manager Pages ---
+    {
+        path: '/manager/dashboard',
+        name: "Manager Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/Dashboard.vue')
+    },
+    {
+        path: '/manager/final-approvals',
+        name: "Final Approvals",
+        meta: { layout: 'main' },
+        component: () => import('../views/manager/FinalApprovals.vue')
     }
 ]
 
