@@ -176,6 +176,33 @@ const routes = [
         meta: { layout: 'main' },
         component: () => import('../views/manager/FinalApprovals.vue')
     },
+    // --- Reviewer Pages ---
+    {
+        path: '/reviewer/dashboard',
+        name: "Reviewer Dashboard",
+        meta: { layout: 'main', requiresAuth: true, role: 'reviewer' },
+        component: () => import('../views/reviewer/Dashboard.vue')
+    },
+    // --- Dashboard Redirect ---
+    {
+        path: '/dashboard',
+        name: "DashboardRedirect",
+        meta: { requiresAuth: true },
+        beforeEnter: (to, from, next) => {
+            const userStr = localStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            if (user?.role === 'admin' || user?.role === 'super_admin') {
+                return next('/admin/users');
+            } else if (user?.role === 'manager') {
+                return next('/manager/dashboard');
+            } else if (user?.role === 'student') {
+                return next('/student/Dashboard');
+            } else if (user?.role === 'reviewer') {
+                return next('/reviewer/dashboard');
+            }
+            next('/login');
+        }
+    },
     {
     path: '/403',
     name: 'Forbidden',

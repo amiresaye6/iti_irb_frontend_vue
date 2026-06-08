@@ -124,25 +124,38 @@ const isRetrying = ref(false);
 const verify = async () => {
   const queryParams = route.query;
 
-  // Try to get the client_secret from localStorage (saved before redirect to Paymob)
+  // ── Step 1: Check Paymob redirect query params FIRST ──
+  // The `success` param from Paymob is the most reliable indicator
+  // of whether the payment gateway accepted or rejected the transaction.
+  const paymobSuccess = queryParams.success;
+
+  if (paymobSuccess === 'false') {
+    // Payment was rejected by the gateway — show error immediately
+    status.value = 'error';
+    const gatewayMessage = queryParams['data.message'] || '';
+    errorMessage.value = gatewayMessage
+      ? `تم رفض عملية الدفع: ${gatewayMessage}`
+      : 'تم رفض عملية الدفع من بوابة الدفع.';
+    // Clean up client_secret so the pending payment card stays visible
+    localStorage.removeItem('pending_client_secret');
+    return;
+  }
+
+  // ── Step 2: Try backend verification with client_secret ──
   const clientSecret = localStorage.getItem('pending_client_secret');
-  
+
   if (!clientSecret) {
-    // Fallback: check Paymob query params for success/failure
-    if (queryParams.success === 'true') {
+    // No client_secret stored — fall back to Paymob query params only
+    if (paymobSuccess === 'true') {
       status.value = 'success';
       return;
-    } else if (queryParams.success === 'false') {
-      status.value = 'error';
-      errorMessage.value = 'تم رفض عملية الدفع من بوابة الدفع.';
-      return;
     }
-    
     status.value = 'error';
     errorMessage.value = 'رابط التحقق غير صالح. لم يتم العثور على بيانات الدفع.';
     return;
   }
 
+  // We have a client_secret AND Paymob says success=true (or no param)
   const res = await verifyPaymentStatus(clientSecret, () => {}, (err) => {
     if (err) {
       status.value = 'error';
@@ -152,25 +165,20 @@ const verify = async () => {
   });
 
   if (res && res.status) {
-    // The API response structure is:
-    // { status: true, data: { success: true/false, is_paid: true/false, data: { paid: true/false, status: "intended" } } }
-    const isPaid = res.data?.is_paid || res.data?.success || res.data?.data?.paid || res.payment_status === 'paid';
-    
-    if (isPaid) {
+    if (res.data?.is_paid === true && res.data?.success === true) {
       status.value = 'success';
-      // Try to extract payment ID for receipt link
-      paymentId.value = res.payment?.id || res.data?.payment_id || null;
-      // Clean up stored client_secret
+      paymentId.value = res.data?.payment_id || null;
       localStorage.removeItem('pending_client_secret');
-    } else if (res.data?.data?.status === 'pending' || res.payment_status === 'pending') {
-      status.value = 'pending';
     } else {
+      // Backend says not paid — treat as failure
       status.value = 'error';
       errorMessage.value = res.message || 'لم يتم تأكيد عملية الدفع.';
+      localStorage.removeItem('pending_client_secret');
     }
   } else if (res && !res.status) {
     status.value = 'error';
     errorMessage.value = res.message || 'فشل التحقق من حالة الدفع.';
+    localStorage.removeItem('pending_client_secret');
   }
 };
 
