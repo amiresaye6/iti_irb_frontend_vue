@@ -1,12 +1,13 @@
 import { useApi } from "@/utils/useApi";
 
 const Base_url = import.meta.env.VITE_BACKEND_SERVER;
+const Docs_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 export const applicationServices = () => {
     // applications APIs
     const getAllApplications = (setLoading,setError) => {
         const apiOptions = {
-            url : `${Base_url}/api/applications`,
+            url : `${Base_url}/applications`,
             method : 'GET',
             data : null,
             setLoading,
@@ -17,18 +18,19 @@ export const applicationServices = () => {
 
     const postApplication = (applicationData,setLoading,setError) => {
         const apiOptions = {
-            url : `${Base_url}/api/applications`,
+            url : `${Base_url}/applications`,
             method : 'POST',
             data : applicationData,
             setLoading,
             setError
         }
+        console.log("Posting application with data:", applicationData);
         return useApi(apiOptions)
     }
 
     const get_PendingAdmin_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/pending_admin`,
+            url : `${Base_url}/applications/pending_admin`,
             method : 'GET',
             data : null,
             setLoading,
@@ -39,7 +41,7 @@ export const applicationServices = () => {
 
     const get_UnderReview_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/under_review`,
+            url : `${Base_url}/applications/under_review`,
             method : 'GET',
             data : null,
             setLoading,
@@ -50,7 +52,7 @@ export const applicationServices = () => {
 
     const get_final_review_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/final_review`,
+            url : `${Base_url}/applications/final_review`,
             method : 'GET',
             data : null,
             setLoading,
@@ -61,7 +63,7 @@ export const applicationServices = () => {
 
     const get_AwaitingPayment_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/awaiting_payment`,
+            url : `${Base_url}/applications/awaiting_payment`,
             method : 'GET',
             data : null,
             setLoading,
@@ -72,7 +74,7 @@ export const applicationServices = () => {
 
     const get_Approved_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/approved`,
+            url : `${Base_url}/applications/approved`,
             method : 'GET',
             data : null,
             setLoading,
@@ -83,7 +85,7 @@ export const applicationServices = () => {
 
     const get_Rejected_Apps = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/rejected`,
+            url : `${Base_url}/applications/rejected`,
             method : 'GET',
             data : null,
             setLoading,
@@ -94,7 +96,7 @@ export const applicationServices = () => {
 
     const rejectApp = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/reject/${appId}`,
+            url : `${Base_url}/applications/reject/${appId}`,
             method : 'POST',
             data : null,
             setLoading,
@@ -106,7 +108,7 @@ export const applicationServices = () => {
     //get user id from authentication
     const getAppsByUserId = (setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/student`,
+            url : `${Base_url}/applications/student`,
             method : 'GET',
             data : null,
             setLoading,
@@ -117,7 +119,7 @@ export const applicationServices = () => {
 
     const getAppsByStudentId = (studentId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/student/${studentId}`,
+            url : `${Base_url}/applications/student/${studentId}`,
             method : 'GET',
             data : null,
             setLoading,
@@ -128,7 +130,7 @@ export const applicationServices = () => {
 
     const getAppById = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}`,
+            url : `${Base_url}/applications/${appId}`,
             method : 'GET',
             data : null,
             setLoading,
@@ -140,8 +142,8 @@ export const applicationServices = () => {
     // DON'T FORGET TO CHECK AUTORIZATION IN BACKEND
     const patchAppById = (appId,appData,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}`,
-            method : 'PATCH',
+            url : `${Base_url}/applications/${appId}`,
+            method : 'POST',
             data : appData,
             setLoading,
             setError
@@ -151,7 +153,7 @@ export const applicationServices = () => {
 
     const toNextStage = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}`,
+            url : `${Base_url}/applications/${appId}`,
             method : 'POST',
             data : null,
             setLoading,
@@ -168,7 +170,7 @@ export const applicationServices = () => {
     
     const getDocsByAppId = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}/Docs`,
+            url : `${Base_url}/applications/${appId}/Docs`,
             method : 'GET',
             data : null,
             setLoading,
@@ -179,7 +181,7 @@ export const applicationServices = () => {
 
     const getDocById = (docId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/Documents/${docId}`,
+            url : `${Base_url}/Documents/${docId}`,
             method : 'GET',
             data : null,
             setLoading,
@@ -190,7 +192,7 @@ export const applicationServices = () => {
 
     const askForModification = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}/ask-for-modification`,
+            url : `${Base_url}/applications/${appId}/ask-for-modification`,
             method : 'POST',
             data : null,
             setLoading,
@@ -201,7 +203,7 @@ export const applicationServices = () => {
 
     const askForReview_afterModification = (appId,setLoading,setError) =>{
         const apiOptions = {
-            url : `${Base_url}/api/applications/${appId}/ask-for-review`,
+            url : `${Base_url}/applications/${appId}/ask-for-review`,
             method : 'POST',
             data : null,
             setLoading,
