@@ -16,7 +16,7 @@ const showPassword = ref(false);
 const ROLE_ROUTES = {
     admin:    '/admin/pending-students',
     student:  '/dashboard',
-    reviewer: '/dashboard',
+    reviewer: '/reviewer/dashboard',
     manager:  '/dashboard',
 };
 

@@ -110,6 +110,19 @@ const routes = [
     meta: { layout: 'main', role: 'admin' },
     component: () => import('../views/admin/PendingStudentsView.vue')
    },
+   {
+    // assign reviewer
+    path: '/admin/assign-reviewer',
+    name: 'AssignReviewers',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/reviews/AssignReviewers.vue')
+   },
+   {
+    path: '/admin/assign-reviewer/:id',
+    name: 'AssignForm',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/reviews/AssignForm.vue')
+   },
 
     // --- Error Pages ---
     {
