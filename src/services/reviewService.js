@@ -41,6 +41,10 @@ export const reviewService = {
     return useApi({ url: `${Base_url}/reviewer/reviews/${applicationId}/submit`, method: 'POST', data, setLoading, setError });
   },
 
+  getAwaitingDecisionAssignments(setLoading, setError) {
+    return useApi({ url: `${Base_url}/reviewer/awaiting-decision-assignments`, method: 'GET', setLoading, setError });
+  },
+
   // ─── ADMIN/MANAGER ENDPOINTS ───
 
   getApplicationsUnderReview(setLoading, setError) {
