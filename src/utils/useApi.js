@@ -1,3 +1,5 @@
+import router from '@/routes/index'
+
 export const useApi = async (
     {
         url,
@@ -11,28 +13,34 @@ export const useApi = async (
         setError(null);
 
         const token = localStorage.getItem('token');
+        
         const isFormData = data instanceof FormData;
+        
         const options = {
             method,
-            headers: 
-            { 
-                // 'Content-Type': 'application/json'
-                'Accept': 'application/json'
+            headers: {
+                'Accept': 'application/json',
             },
         }
+
         if (!isFormData) {
             options.headers['Content-Type'] = 'application/json';
         }
+
         if (token) {
             options.headers.Authorization = `Bearer ${token}`;
         }
 
         if (method !== "GET" && data) {
-            // options.body = JSON.stringify(data);
             options.body = isFormData ? data : JSON.stringify(data);
         }
+
         const res = await fetch(url, options)
 
+        if (res.status === 401 || res.status === 403) {
+            router.push({ name: 'Unauthorized' });
+            return null;
+        }
 
         if (!res.ok) {
             const errData = await res.json();
