@@ -97,3 +97,11 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(107, 114, 128, 0.7);
 }
+
+/* Ensure FontAwesome keeps its font-family, including pseudo-elements */
+i[class^="fa-"],
+i[class^="fa-"]::before,
+i[class^="fa-"]::after {
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important; /* Required for 'solid' icons */
+}
