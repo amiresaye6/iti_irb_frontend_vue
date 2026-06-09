@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup> 
 import { ref, onMounted } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { applicationServices } from '@/services/applicationServices.js'
@@ -70,9 +70,9 @@ const getStageName = (stage) => {
     return stageTranslations[stage] || stage;
 };
 
-</script> -->
+</script> 
 
-<!-- <template>
+<template>
     <div class="max-w-6xl mx-auto px-4 py-8 space-y-8 w-full font-sans">
         
         <div v-if="!application?.needs_modification" class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
@@ -239,9 +239,9 @@ const getStageName = (stage) => {
             
         </div>
     </div>
-</template> -->
+</template>
 
-<template>
+<!-- <template>
     <div class="max-w-6xl mx-auto px-4 py-8 space-y-8 w-full font-sans">
         
         <div class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">
@@ -372,9 +372,9 @@ const getStageName = (stage) => {
 
         </div>
     </div>
-</template>
+</template> -->
 
-<script setup>
+<!-- <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { applicationServices } from '@/services/applicationServices.js'
@@ -479,4 +479,4 @@ const stageTranslations = {
 
 const getDocumentName = (docType) => documentTranslations[docType] || docType;
 const getStageName = (stage) => stageTranslations[stage] || stage;
-</script>
+</script> -->
