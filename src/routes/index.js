@@ -163,6 +163,12 @@ const routes = [
         component: () => import('../views/student/accept-modification.vue')
     },
     {
+        path: '/admin/dashboard',
+        name: 'Dashboard',
+        meta: { layout: 'main', requiresAuth: true, role: ['admin', 'manager', 'super_admin'] },
+        component: () => import('../views/admin/DashboardView.vue')
+    },
+    {
     path: '/403',
     name: 'Forbidden',
     component: () => import('@/views/global/ForbiddenView.vue'),
