@@ -12,35 +12,36 @@
       @sort="handleSort"
     />
   -->
-  <thead class="bg-base-200/50 text-base-content/70 text-sm">
+  <thead class="bg-neutral text-neutral-content text-sm">
     <tr>
       <th 
         v-for="col in columns" 
         :key="col.key"
-        class="px-6 py-4 font-semibold text-start whitespace-nowrap"
-        :class="[col.sortable ? 'cursor-pointer hover:bg-base-200 transition-colors select-none' : '', col.class]"
+        class="px-6 py-4 font-extrabold text-start whitespace-nowrap border-b-[2px] border-primary"
+        :class="[col.sortable ? 'cursor-pointer hover:brightness-110 transition-all select-none' : '', col.class]"
         @click="col.sortable ? emitSort(col.key) : null"
       >
         <div class="flex items-center gap-2">
           {{ col.label }}
           
           <!-- Sort Indicator -->
-          <div v-if="col.sortable" class="flex flex-col opacity-40" :class="{ 'opacity-100 text-primary': currentSortColumn === col.key }">
+          <div v-if="col.sortable" class="flex items-center justify-center w-6 h-6 rounded-full bg-white/15" :class="{ 'bg-white/25': currentSortColumn === col.key }">
             <svg 
+              v-if="currentSortColumn !== col.key || currentSortDirection === 'asc'"
               xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3 -mb-1" 
-              :class="{ 'text-primary opacity-100': currentSortColumn === col.key && currentSortDirection === 'asc' }"
+              class="h-3.5 w-3.5 transition-all" 
+              :class="{ 'opacity-50': currentSortColumn !== col.key }"
               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
             </svg>
             <svg 
+              v-else-if="currentSortColumn === col.key && currentSortDirection === 'desc'"
               xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3" 
-              :class="{ 'text-primary opacity-100': currentSortColumn === col.key && currentSortDirection === 'desc' }"
+              class="h-3.5 w-3.5 transition-all" 
               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
             </svg>
           </div>
         </div>

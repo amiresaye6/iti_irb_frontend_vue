@@ -42,18 +42,25 @@
       <div 
         v-for="(item, index) in data" 
         :key="index"
-        class="bg-base-50 rounded-xl p-4 border border-base-200/50 flex flex-col gap-3 shadow-sm"
+        class="bg-base-100 rounded-xl p-4 border border-base-200 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md"
       >
-        <div 
-          v-for="col in columns" 
-          :key="col.key"
-          class="flex flex-col gap-1 border-b border-base-200/30 pb-2 last:border-0 last:pb-0"
-        >
-          <span class="text-xs text-base-content/50 font-semibold">{{ col.label }}</span>
-          <div class="text-sm font-medium text-base-content">
-            <slot :name="`cell(${col.key})`" :item="item">
-              {{ item[col.key] }}
-            </slot>
+        <div class="flex flex-col gap-3">
+          <div 
+            v-for="col in columns" 
+            :key="col.key"
+            class="flex flex-col gap-2 border-b border-primary/20 pb-3 last:border-0 last:pb-0"
+          >
+            <span class="text-sm font-extrabold text-primary border-b-2 border-accent w-fit pb-0.5">{{ col.label }}</span>
+            <div class="text-sm font-medium text-base-content flex flex-col gap-2">
+              <slot :name="`cell(${col.key})`" :item="item">
+                {{ item[col.key] }}
+              </slot>
+            </div>
+          </div>
+          
+          <!-- Optional Mobile Row Actions -->
+          <div v-if="hasRowActionsSlot" class="pt-3 mt-1 border-t border-base-200 flex flex-col gap-2">
+            <slot name="row-actions" :item="item"></slot>
           </div>
         </div>
       </div>
@@ -69,7 +76,9 @@
           @sort="(payload) => $emit('sort', payload)"
         >
           <!-- Forward the header slot if needed for actions -->
-          <slot name="header-actions"></slot>
+          <slot name="header-actions">
+            <th v-if="hasRowActionsSlot" class="px-6 py-4 font-extrabold text-center border-b-[2px] border-primary w-24">الإجراءات</th>
+          </slot>
         </DataTableHeader>
         
         <tbody>
