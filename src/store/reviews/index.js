@@ -8,6 +8,7 @@ export const useReviewStore = defineStore('reviews', {
     pendingAssignments: [],
     activeAssignments: [],
     assignmentHistory: [],
+    awaitingDecisionAssignments: [],
     currentReviewDetails: null,
     
     // Admin
@@ -102,6 +103,15 @@ export const useReviewStore = defineStore('reviews', {
         return { success: true };
       }
       return { success: false, message: 'حدث خطأ' };
+    },
+
+    async fetchAwaitingDecisionAssignments() {
+      this.loading = true;
+      const data = await reviewService.getAwaitingDecisionAssignments(
+        (v) => { this.loading = v; },
+        (e) => { this.error = e?.message || null; }
+      );
+      if (data) this.awaitingDecisionAssignments = data;
     },
 
     // ─── ADMIN ACTIONS ───
