@@ -212,6 +212,17 @@ export const applicationServices = () => {
         return useApi(apiOptions)
     }
 
+    const getCommentsByAppId = (appId,setLoading,setError) =>{
+        const apiOptions = {
+            url : `${Base_url}/applications/${appId}/comments`,
+            method : 'GET',
+            data : null,
+            setLoading,
+            setError
+        }
+        return useApi(apiOptions)
+    }
+
     return{
         getAllApplications,
         postApplication,
@@ -230,6 +241,7 @@ export const applicationServices = () => {
         getDocsByAppId,
         getDocById,
         askForModification,
-        askForReview_afterModification
+        askForReview_afterModification,
+        getCommentsByAppId
     }
 }
