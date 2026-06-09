@@ -51,8 +51,11 @@ export const reviewService = {
     return useApi({ url: `${Base_url}/admin/reviews/under-review`, method: 'GET', setLoading, setError });
   },
 
-  getAvailableReviewers(setLoading, setError) {
-    return useApi({ url: `${Base_url}/admin/reviews/available-reviewers`, method: 'GET', setLoading, setError });
+  getAvailableReviewers(applicationId, setLoading, setError) {
+    const url = applicationId 
+      ? `${Base_url}/admin/reviews/available-reviewers?applicationId=${applicationId}`
+      : `${Base_url}/admin/reviews/available-reviewers`;
+    return useApi({ url, method: 'GET', setLoading, setError });
   },
 
   assignReviewer(applicationId, reviewerId, setLoading, setError) {
@@ -61,5 +64,9 @@ export const reviewService = {
 
   getAllSystemReviews(setLoading, setError) {
     return useApi({ url: `${Base_url}/admin/reviews/all`, method: 'GET', setLoading, setError });
+  },
+
+  getApplicationAssignmentHistory(applicationId, setLoading, setError) {
+    return useApi({ url: `${Base_url}/admin/reviews/assignments/${applicationId}`, method: 'GET', setLoading, setError });
   }
 };

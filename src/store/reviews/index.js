@@ -125,9 +125,10 @@ export const useReviewStore = defineStore('reviews', {
       if (data) this.applicationsUnderReview = data;
     },
 
-    async fetchAvailableReviewers() {
+    async fetchAvailableReviewers(applicationId = null) {
       this.loading = true;
       const data = await reviewService.getAvailableReviewers(
+        applicationId,
         (v) => { this.loading = v; },
         (e) => { this.error = e?.message || null; }
       );
@@ -135,9 +136,15 @@ export const useReviewStore = defineStore('reviews', {
     },
 
     async assignReviewer(applicationId, reviewerId) {
-      const data = await reviewService.assignReviewer(applicationId, reviewerId);
+      let errMessage = null;
+      const data = await reviewService.assignReviewer(
+        applicationId, 
+        reviewerId,
+        () => {},
+        (e) => { errMessage = e?.message; }
+      );
       if (data) return { success: true, message: data.message || 'تم الإسناد بنجاح' };
-      return { success: false, message: 'حدث خطأ' };
+      return { success: false, message: errMessage || 'حدث خطأ' };
     },
 
     async fetchAllSystemReviews() {
@@ -147,6 +154,18 @@ export const useReviewStore = defineStore('reviews', {
         (e) => { this.error = e?.message || null; }
       );
       if (data) this.allSystemReviews = data;
+    },
+
+    async fetchApplicationAssignmentHistory(applicationId) {
+      let result = null;
+      let errMsg = null;
+      const data = await reviewService.getApplicationAssignmentHistory(
+        applicationId,
+        () => {},
+        (e) => { errMsg = e?.message || 'حدث خطأ'; }
+      );
+      if (data) return { success: true, data };
+      return { success: false, message: errMsg };
     }
   }
 });
