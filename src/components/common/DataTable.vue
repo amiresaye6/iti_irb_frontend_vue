@@ -35,9 +35,7 @@
 
     <!-- Mobile View (Cards) -->
     <div class="block lg:hidden p-4 space-y-4">
-      <div v-if="!data || data.length === 0" class="text-center py-8 text-base-content/60">
-        لا توجد بيانات للعرض
-      </div>
+
       
       <div 
         v-for="(item, index) in data" 
@@ -76,17 +74,15 @@
           @sort="(payload) => $emit('sort', payload)"
         >
           <!-- Forward the header slot if needed for actions -->
-          <slot name="header-actions">
-            <th v-if="hasRowActionsSlot" class="px-6 py-4 font-extrabold text-center border-b-[2px] border-primary w-24">الإجراءات</th>
-          </slot>
+          <template #default>
+            <slot name="header-actions">
+              <th v-if="hasRowActionsSlot" class="px-6 py-4 font-extrabold text-center border-b-[2px] border-primary w-24">الإجراءات</th>
+            </slot>
+          </template>
         </DataTableHeader>
         
         <tbody>
-          <tr v-if="!data || data.length === 0">
-            <td :colspan="columns.length + (hasHeaderActionsSlot ? 1 : 0)" class="text-center py-12 text-base-content/60">
-              لا توجد بيانات للعرض
-            </td>
-          </tr>
+
           <tr 
             v-for="(item, index) in data" 
             :key="index"
@@ -105,6 +101,15 @@
             <!-- Actions slot for each row if needed -->
             <td v-if="hasRowActionsSlot" class="px-6 py-4">
               <slot name="row-actions" :item="item"></slot>
+            </td>
+          </tr>
+          <!-- Empty state row -->
+          <tr v-if="data.length === 0">
+            <td :colspan="columns.length + (hasRowActionsSlot ? 1 : 0)" class="px-6 py-12 text-center">
+              <div class="flex flex-col items-center gap-2 text-base-content/50">
+                <i class="fa-solid fa-inbox text-4xl opacity-30"></i>
+                <p class="font-bold text-[0.95rem]">{{ emptyMessage }}</p>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -164,6 +169,10 @@ const props = defineProps({
   currentSortDirection: {
     type: String,
     default: ''
+  },
+  emptyMessage: {
+    type: String,
+    default: 'لا توجد بيانات'
   }
 })
 

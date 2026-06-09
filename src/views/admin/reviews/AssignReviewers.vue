@@ -1,10 +1,14 @@
 <template>
   <div class="space-y-6 p-4 md:p-6">
-    <PageHeader 
-      title="تعيين المراجعين" 
-      subtitle="إدارة الأبحاث قيد المراجعة وإسنادها للمراجعين المتاحين"
-      icon="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-    />
+    <div class="mb-6">
+      <h2 class="text-primary text-2xl font-extrabold flex items-center gap-3 mb-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        تعيين المراجعين
+      </h2>
+      <p class="text-base-content/60 text-sm font-medium">إدارة الأبحاث قيد المراجعة وإسنادها للمراجعين المتاحين</p>
+    </div>
 
     <!-- Search Toolbar -->
     <SearchBar
@@ -18,11 +22,11 @@
 
     <!-- Results Bar -->
     <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg border border-base-200 shadow-sm mt-4">
-      <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-md text-sm font-bold">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <span class="text-base-content font-bold flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
-        {{ filteredData.length }} بحث
+        إجمالي: {{ filteredData.length }} بحث
       </span>
     </div>
 
@@ -31,10 +35,13 @@
       :data="filteredData" 
       :columns="columns"
       :loading="reviewStore.loading"
+      :current-sort-column="sortCol"
+      :current-sort-direction="sortDir"
+      @sort="handleSort"
       class="mt-4"
     >
       <template #cell(serial_number)="{ item }">
-        <span class="bg-neutral text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20">
+        <span class="text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20" style="background-color: oklch(35% 0.02 245)">
           {{ item.serial_number || '—' }}
         </span>
       </template>
@@ -120,11 +127,19 @@ const reviewStore = useReviewStore();
 const searchQuery = ref('');
 
 const columns = [
-  { key: 'serial_number', label: 'رقم الملف', sortable: false },
+  { key: 'serial_number', label: 'رقم الملف', sortable: true },
   { key: 'research_data', label: 'بيانات البحث', sortable: false },
-  { key: 'created_at', label: 'تاريخ التقديم', sortable: false },
+  { key: 'created_at', label: 'تاريخ التقديم', sortable: true },
   { key: 'assignment_status', label: 'حالة الإسناد', sortable: false }
 ];
+
+const sortCol = ref('');
+const sortDir = ref('');
+
+const handleSort = ({ column, direction }) => {
+  sortCol.value = column;
+  sortDir.value = direction;
+};
 
 const filteredData = computed(() => {
   let list = reviewStore.applicationsUnderReview || [];
@@ -137,6 +152,18 @@ const filteredData = computed(() => {
       (a.department && a.department.toLowerCase().includes(q))
     );
   }
+  
+  if (sortCol.value && sortDir.value) {
+    list.sort((a, b) => {
+      let valA = a[sortCol.value] || '';
+      let valB = b[sortCol.value] || '';
+      
+      if (valA < valB) return sortDir.value === 'asc' ? -1 : 1;
+      if (valA > valB) return sortDir.value === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+  
   return list;
 });
 

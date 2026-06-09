@@ -1,10 +1,14 @@
 <template>
   <div class="space-y-6 p-4 md:p-6">
-    <PageHeader 
-      title="سجل المراجعات" 
-      subtitle="تاريخ الأبحاث التي تم إسنادها لك وقراراتك السابقة"
-      icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
+    <div class="mb-6">
+      <h2 class="text-primary text-2xl font-extrabold flex items-center gap-3 mb-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        سجل المراجعات
+      </h2>
+      <p class="text-base-content/60 text-sm font-medium">تاريخ الأبحاث التي تم إسنادها لك وقراراتك السابقة</p>
+    </div>
 
     <!-- Search Toolbar -->
     <SearchBar
@@ -13,16 +17,49 @@
       search-label="البحث السريع"
       placeholder="ابحث برقم الملف أو عنوان البحث..."
       input-id="historySearchInput"
-      @reset="searchQuery = ''"
-    />
+      @reset="handleReset"
+    >
+      <template #extra-filters>
+          <div class="irb-filter-group w-full md:w-auto">
+            <label class="text-[0.78rem] font-extrabold text-primary flex items-center gap-1.5 mb-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              حالة الإسناد
+            </label>
+            <select v-model="statusFilter" class="select select-bordered w-full md:w-40 bg-white border-slate-300">
+              <option value="">الكل</option>
+              <option value="accepted">مقبول</option>
+              <option value="refused">مرفوض</option>
+              <option value="awaiting_acceptance">بانتظار القبول</option>
+            </select>
+          </div>
+
+          <div class="irb-filter-group w-full md:w-auto">
+            <label class="text-[0.78rem] font-extrabold text-primary flex items-center gap-1.5 mb-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              قرار المراجعة
+            </label>
+            <select v-model="decisionFilter" class="select select-bordered w-full md:w-40 bg-white border-slate-300">
+              <option value="">الكل</option>
+              <option value="pending">قيد الانتظار</option>
+              <option value="approved">موافقة</option>
+              <option value="needs_modification">طلب تعديل</option>
+              <option value="rejected">رفض</option>
+            </select>
+          </div>
+      </template>
+    </SearchBar>
 
     <!-- Results Bar -->
     <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg border border-base-200 shadow-sm mt-4">
-      <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-md text-sm font-bold">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <span class="text-base-content font-bold flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        {{ filteredData.length }} سجل
+        إجمالي: {{ filteredData.length }} سجل
       </span>
     </div>
 
@@ -30,10 +67,13 @@
       :data="filteredData" 
       :columns="columns"
       :loading="reviewStore.loading"
+      :current-sort-column="sortCol"
+      :current-sort-direction="sortDir"
+      @sort="handleSort"
       class="mt-4"
     >
       <template #cell(serial_number)="{ item }">
-        <span class="bg-neutral text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20">
+        <span class="text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20" style="background-color: oklch(35% 0.02 245)">
           {{ item.serial_number || '—' }}
         </span>
       </template>
@@ -87,7 +127,7 @@
       
       <template #cell(assigned_at)="{ item }">
         <div class="flex flex-col gap-1">
-          <span class="font-bold text-base-content text-[0.92rem]">{{ new Date(item.assigned_at).toLocaleDateString('en-GB') }}</span>
+          <span class="font-bold text-base-content text-[0.92rem]">{{ new Date(item.assigned_at).toLocaleDateString('ar-SA') }}</span>
           <small class="text-base-content/60 text-[0.78rem] flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -110,13 +150,30 @@ import SearchBar from '@/components/common/SearchBar.vue';
 const reviewStore = useReviewStore();
 const searchQuery = ref('');
 
+const statusFilter = ref('');
+const decisionFilter = ref('');
+
 const columns = [
-  { key: 'serial_number', label: 'رقم الملف', sortable: false },
+  { key: 'serial_number', label: 'رقم الملف', sortable: true },
   { key: 'research_data', label: 'عنوان البحث', sortable: false },
-  { key: 'assignment_status', label: 'حالة الإسناد', sortable: false },
+  { key: 'assignment_status', label: 'حالة الإسناد', sortable: true },
   { key: 'decision', label: 'قرار المراجعة', sortable: false },
-  { key: 'assigned_at', label: 'تاريخ الإسناد', sortable: false }
+  { key: 'assigned_at', label: 'تاريخ الإسناد', sortable: true }
 ];
+
+const sortCol = ref('');
+const sortDir = ref('');
+
+const handleSort = ({ column, direction }) => {
+  sortCol.value = column;
+  sortDir.value = direction;
+};
+
+const handleReset = () => {
+  searchQuery.value = '';
+  statusFilter.value = '';
+  decisionFilter.value = '';
+};
 
 const filteredData = computed(() => {
   let list = reviewStore.assignmentHistory || [];
@@ -128,6 +185,26 @@ const filteredData = computed(() => {
       (a.refusal_reason && a.refusal_reason.toLowerCase().includes(q))
     );
   }
+  
+  if (statusFilter.value) {
+    list = list.filter(a => a.assignment_status === statusFilter.value);
+  }
+  
+  if (decisionFilter.value) {
+    list = list.filter(a => a.decision === decisionFilter.value);
+  }
+  
+  if (sortCol.value && sortDir.value) {
+    list.sort((a, b) => {
+      let valA = a[sortCol.value] || '';
+      let valB = b[sortCol.value] || '';
+      
+      if (valA < valB) return sortDir.value === 'asc' ? -1 : 1;
+      if (valA > valB) return sortDir.value === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+  
   return list;
 });
 

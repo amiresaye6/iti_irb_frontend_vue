@@ -24,31 +24,33 @@
       </button>
     </div>
 
-    <!-- Slot for extra filters -->
-    <slot name="extra-filters"></slot>
-
-    <div class="irb-filter-group">
-      <label class="irb-filter-label" :for="inputId">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        {{ searchLabel }}
-      </label>
-      <div class="irb-search-wrapper">
-        <input
-          :id="inputId"
-          type="text"
-          :value="modelValue"
-          @input="$emit('update:modelValue', $event.target.value)"
-          :placeholder="placeholder"
-          class="irb-search-input"
-        />
-        <span class="irb-search-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="flex flex-col md:flex-row items-end gap-4 w-full">
+      <div class="irb-filter-group flex-1 w-full">
+        <label class="irb-filter-label" :for="inputId">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-        </span>
+          {{ searchLabel }}
+        </label>
+        <div class="irb-search-wrapper">
+          <input
+            :id="inputId"
+            type="text"
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)"
+            :placeholder="placeholder"
+            class="irb-search-input"
+          />
+          <span class="irb-search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+        </div>
       </div>
+
+      <!-- Slot for extra filters -->
+      <slot name="extra-filters"></slot>
     </div>
   </div>
 </template>
@@ -173,7 +175,7 @@ const handleReset = () => {
   font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 9px 12px 9px 38px;
+  padding: 9px 38px 9px 12px;
   box-sizing: border-box;
   transition: all 0.2s ease;
   outline: none;
@@ -186,7 +188,7 @@ const handleReset = () => {
 
 .irb-search-icon {
   position: absolute;
-  left: 12px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: rgba(127,140,141,0.7);

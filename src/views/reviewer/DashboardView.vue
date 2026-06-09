@@ -1,10 +1,14 @@
 <template>
   <div class="space-y-8 p-4 md:p-6">
-    <PageHeader 
-      title="لوحة تحكم المراجع" 
-      subtitle="نظرة عامة على الإحصائيات والأبحاث المسندة"
-      icon="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
+    <div class="mb-6">
+      <h2 class="text-primary text-2xl font-extrabold flex items-center gap-3 mb-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        لوحة تحكم المراجع
+      </h2>
+      <p class="text-base-content/60 text-sm font-medium">نظرة عامة على الإحصائيات والأبحاث المسندة</p>
+    </div>
 
     <div v-if="reviewStore.loading" class="flex justify-center p-12">
       <Spinner />
@@ -96,28 +100,18 @@
           أبحاث تتطلب إجراءً منك
         </div>
 
-      
-        <div v-if="!reviewStore.awaitingDecisionAssignments || reviewStore.awaitingDecisionAssignments.length === 0" class="irb-empty-state">
-          <svg xmlns="http://www.w3.org/2000/svg" class="irb-empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p class="irb-empty-title">عمل رائع!</p>
-          <p>لا توجد أبحاث حالياً تتطلب مراجعتك.</p>
-        </div>
-
-      
-        <DataTable 
-          v-else
-          :data="reviewStore.awaitingDecisionAssignments"
+        <DataTable
+          :data="reviewStore.awaitingDecisionAssignments || []"
           :columns="[
-            { key: 'serial_number', label: 'رقم الملف', sortable: false },
+            { key: 'serial_number', label: 'رقم الملف', sortable: true },
             { key: 'research_data', label: 'بيانات البحث', sortable: false },
-            { key: 'created_at', label: 'تاريخ التقديم', sortable: false },
+            { key: 'created_at', label: 'تاريخ التقديم', sortable: true },
             { key: 'decision', label: 'حالة المراجعة', sortable: false }
           ]"
+          empty-message="لا توجد أبحاث تتطلب إجراءً منك حالياً"
         >
           <template #cell(serial_number)="{ item }">
-            <span class="bg-neutral text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20">
+            <span class="text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20" style="background-color: oklch(35% 0.02 245)">
               {{ item.serial_number || '—' }}
             </span>
           </template>
@@ -167,7 +161,7 @@
             </span>
           </template>
 
-          <template #row-actions="{ item } ">
+          <template #row-actions="{ item }">
             <router-link :to="`/reviewer/review/${item.application_id}`" class="btn btn-sm shrink-0 px-6 whitespace-nowrap btn-primary gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -190,7 +184,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useReviewStore } from '@/store/reviews/index';
 import PageHeader from '@/components/common/PageHeader.vue';
 import Spinner from '@/components/common/Spinner.vue';

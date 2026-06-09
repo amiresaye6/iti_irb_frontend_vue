@@ -1,10 +1,14 @@
 <template>
   <div class="space-y-6 p-4 md:p-6">
-    <PageHeader 
-      title="الأبحاث قيد المراجعة" 
-      subtitle="قائمة بالأبحاث التي تم قبول مراجعتها بانتظار قرارك النهائي"
-      icon="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-    />
+    <div class="mb-6">
+      <h2 class="text-primary text-2xl font-extrabold flex items-center gap-3 mb-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        الأبحاث قيد المراجعة
+      </h2>
+      <p class="text-base-content/60 text-sm font-medium">قائمة بالأبحاث التي تم قبول مراجعتها بانتظار قرارك النهائي</p>
+    </div>
 
     <!-- Search Toolbar -->
     <SearchBar
@@ -13,7 +17,7 @@
       search-label="البحث السريع"
       placeholder="ابحث برقم الملف أو عنوان البحث..."
       input-id="assignedSearchInput"
-      @reset="searchQuery = ''"
+      @reset="handleReset"
     >
       <template #extra-filters>
         <div class="irb-filter-group w-full md:w-auto">
@@ -36,11 +40,11 @@
 
     <!-- Results Bar -->
     <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg border border-base-200 shadow-sm mt-4">
-      <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-md text-sm font-bold">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <span class="text-base-content font-bold flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
-        {{ filteredData.length }} بحث
+        إجمالي: {{ filteredData.length }} بحث
       </span>
     </div>
 
@@ -49,10 +53,13 @@
       :data="filteredData" 
       :columns="columns"
       :loading="reviewStore.loading"
+      :current-sort-column="sortCol"
+      :current-sort-direction="sortDir"
+      @sort="handleSort"
       class="mt-4"
     >
       <template #cell(serial_number)="{ item }">
-        <span class="bg-neutral text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20">
+        <span class="text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20" style="background-color: oklch(35% 0.02 245)">
           {{ item.serial_number || '—' }}
         </span>
       </template>
@@ -133,10 +140,23 @@ const searchQuery = ref('');
 const decisionFilter = ref('');
 
 const columns = [
-  { key: 'serial_number', label: 'رقم الملف', sortable: false },
+  { key: 'serial_number', label: 'رقم الملف', sortable: true },
   { key: 'research_data', label: 'بيانات البحث', sortable: false },
-  { key: 'decision', label: 'القرار الحالي', sortable: false }
+  { key: 'decision', label: 'القرار الحالي', sortable: true }
 ];
+
+const sortCol = ref('');
+const sortDir = ref('');
+
+const handleSort = ({ column, direction }) => {
+  sortCol.value = column;
+  sortDir.value = direction;
+};
+
+const handleReset = () => {
+  searchQuery.value = '';
+  decisionFilter.value = '';
+};
 
 const isRedacted = (item) => {
   return item.is_blinded || item.principal_investigator === 'معلومات محجوبة';
@@ -154,6 +174,18 @@ const filteredData = computed(() => {
   if (decisionFilter.value) {
     list = list.filter(a => a.decision === decisionFilter.value);
   }
+  
+  if (sortCol.value && sortDir.value) {
+    list.sort((a, b) => {
+      let valA = a[sortCol.value] || '';
+      let valB = b[sortCol.value] || '';
+      
+      if (valA < valB) return sortDir.value === 'asc' ? -1 : 1;
+      if (valA > valB) return sortDir.value === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+  
   return list;
 });
 

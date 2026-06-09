@@ -59,23 +59,22 @@
       </div>
 
       <!-- Table -->
-      <!-- Table -->
       <DataTable 
         v-else
         :data="paginatedAssignments"
         :columns="[
-          { key: 'serial_number', label: 'رقم الملف', sortable: false },
+          { key: 'serial_number', label: 'رقم الملف', sortable: true },
           { key: 'research_data', label: 'بيانات البحث', sortable: false },
           { key: 'status', label: 'الحالة', sortable: false },
-          { key: 'assigned_at', label: 'تاريخ الإسناد', sortable: true },
-          { key: 'actions', label: 'الإجراءات', sortable: false }
+          { key: 'assigned_at', label: 'تاريخ الإسناد', sortable: true }
         ]"
         :current-sort-column="sortDir ? 'assigned_at' : ''"
         :current-sort-direction="sortDir"
         @sort="toggleSort"
+        empty-message="لا توجد طلبات إسناد معلقة حالياً"
       >
         <template #cell(serial_number)="{ item, index }">
-          <span class="bg-neutral text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20">
+          <span class="text-neutral-content font-extrabold px-3 py-1.5 rounded-md text-sm whitespace-nowrap shadow-sm border border-neutral-content/20" style="background-color: oklch(35% 0.02 245)">
             {{ item.serial_number || '—' }}
           </span>
           <div v-if="index === 0 && currentPage === 1" class="mt-2">

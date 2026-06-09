@@ -12,7 +12,7 @@
       @sort="handleSort"
     />
   -->
-  <thead class="bg-neutral text-neutral-content text-sm">
+  <thead class="text-neutral-content text-sm" style="background-color: oklch(35% 0.02 245)">
     <tr>
       <th 
         v-for="col in columns" 
