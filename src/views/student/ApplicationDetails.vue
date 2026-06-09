@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { applicationServices } from '@/services/applicationServices.js'
+import ApplicationStages from '@/components/common/ApplicationStages.vue'
 
 const Base_url = import.meta.env.VITE_BACKEND_SERVER;
 const Docs_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
@@ -127,6 +128,7 @@ const getStageName = (stage) => {
         </div>
 
         <div v-else-if="application" class="space-y-8">
+            <ApplicationStages :current-stage="application.current_stage" />
             
             <div class="bg-base-100 rounded-2xl shadow-sm border border-base-200/60 overflow-hidden">
                 <div class="px-6 py-5 border-b border-base-200/60 flex flex-wrap gap-4 items-center justify-between bg-base-50/50">
