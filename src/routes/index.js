@@ -46,11 +46,11 @@ const routes = [
       const user = userStr ? JSON.parse(userStr) : null;
 
       if (user?.role === "admin" || user?.role === "super_admin") {
-        return next("/admin/users");
+        return next("/admin/dashboard");
       } else if (user?.role === "manager") {
         return next("/manager/dashboard");
       } else if (user?.role === "student") {
-        return next("/student/Dashboard");
+        return next("/student/dashboard");
       } else if (user?.role === "reviewer") {
         return next("/reviewer/dashboard");
       }
@@ -63,7 +63,7 @@ const routes = [
   //  STUDENT PAGES
   // =============================================
   {
-    path: "/student/Dashboard",
+    path: "/student/dashboard",
     name: "StudentDashboard",
     meta: { layout: "main", requiresAuth: true, role: "student" },
     component: () => import("../views/student/Dashboard.vue"),
