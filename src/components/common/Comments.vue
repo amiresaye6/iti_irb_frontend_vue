@@ -22,7 +22,23 @@ const fetchComments = async () => {
   try {
     const data = await appServices.getCommentsByAppId(props.id, setLoading, setError)
     if (data && Array.isArray(data)) {
-      comments.value = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      // New API shape: array of review objects with `reviewer` and `comments` array
+      // Flatten into a unified comments list that includes reviewer name.
+      let items = []
+      if (data.length > 0 && data[0].hasOwnProperty('comments')) {
+        data.forEach((review) => {
+          const reviewerName = review.reviewer?.full_name || review.reviewer?.fullName || ''
+          if (Array.isArray(review.comments)) {
+            review.comments.forEach((c) => {
+              items.push({ id: c.id, comment: c.comment, created_at: c.created_at, reviewer_name: reviewerName })
+            })
+          }
+        })
+      } else {
+        items = data.map((c) => ({ id: c.id, comment: c.comment, created_at: c.created_at, reviewer_name: c.reviewer_name || '' }))
+      }
+
+      comments.value = items.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     } else {
       comments.value = []
     }
@@ -63,7 +79,8 @@ const formatDate = (iso) => {
 
       <div v-else class="space-y-3">
         <div v-for="c in comments" :key="c.id" class="bg-white p-4 rounded-lg border">
-          <p class="text-base text-base-content">{{ c.comment }}</p>
+          <p class="text-sm font-semibold text-base-content">{{ c.reviewer_name }}</p>
+          <p class="text-base text-base-content mt-1">{{ c.comment }}</p>
           <p class="text-xs text-base-content/60 mt-2">{{ formatDate(c.created_at) }}</p>
         </div>
       </div>
