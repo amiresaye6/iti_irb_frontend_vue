@@ -191,6 +191,7 @@ const navLinks = computed(() => {
         });
 }
     else if (role.value === 'manager') {
+        // TODO: No matching route exists for /manager/statistics yet — add when the page is ready
         links.push({
             id: 'manager/statistics',
             label: 'الأحصائيات',
