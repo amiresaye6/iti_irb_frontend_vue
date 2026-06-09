@@ -95,3 +95,28 @@ export const addStaff = ({ data, setLoading, setError }) =>
         setLoading,
         setError,
     });
+
+// ─── Dashboard ─────────────────────────────────────────
+export const getDashboardStats = ({ setLoading, setError }) =>
+    useApi({
+        url: `${BASE_URL}/dashboard/stats`,
+        method: 'GET',
+        setLoading,
+        setError,
+    });
+
+export const getRecentLogs = ({ setLoading, setError }) =>
+    useApi({
+        url: `${BASE_URL}/dashboard/logs`,
+        method: 'GET',
+        setLoading,
+        setError,
+    });
+
+export const getRecentApplications = ({ setLoading, setError }) =>
+    useApi({
+        url: `${BASE_URL}/dashboard/applications/recent`,
+        method: 'GET',
+        setLoading,
+        setError,
+    });
