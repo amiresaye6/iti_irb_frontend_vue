@@ -275,24 +275,24 @@ const routes = [
   },
 
   // --- Manager Pages ---
-  {
-    path: "/manager/dashboard",
-    name: "Manager Dashboard",
-    meta: { layout: "main" },
-    component: () => import("../views/manager/Dashboard.vue"),
-  },
-  {
-    path: "/manager/final-approvals",
-    name: "Final Approvals",
-    meta: { layout: "main" },
-    component: () => import("../views/manager/FinalApprovalsHistory.vue"),
-  },
-  {
-    path: "/manager/decisions/:id",    
-    name: "Manager Decision Details",
-    meta: { layout: "main" },
-    component: () => import("../views/manager/DecisionDetails.vue"),
-  },
+    {
+        path: "/manager/dashboard",
+        name: "Manager Dashboard",
+        meta: { layout: "main", requiresAuth: true, role: "manager" }, 
+        component: () => import("../views/manager/Dashboard.vue"),
+    },
+    {
+        path: "/manager/final-approvals",
+        name: "Final Approvals",
+        meta: { layout: "main", requiresAuth: true, role: "manager" },   
+        component: () => import("../views/manager/FinalApprovalsHistory.vue"),
+    },
+    {
+        path: "/manager/decisions/:id",    
+        name: "Manager Decision Details",
+        meta: { layout: "main", requiresAuth: true, role: "manager" }, 
+        component: () => import("../views/manager/DecisionDetails.vue"),
+    },
 ];
 
 const router = createRouter({
