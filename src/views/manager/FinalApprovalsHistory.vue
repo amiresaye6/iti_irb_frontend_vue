@@ -48,13 +48,27 @@
           {{ item.student?.full_name || 'N/A' }}
         </template>
 
-        <template #cell(status)="{}">
-          <div class="badge badge-success gap-2 py-3 px-4 font-semibold text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            معتمد نهائياً
-          </div>
+        <template #cell(status)="{ item }">
+        <div v-if="item.current_stage === 'approved'" class="badge badge-success gap-2 py-3 px-4 font-semibold text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          معتمد نهائياً
+        </div>
+
+        <div v-else-if="item.current_stage === 'rejected'" class="badge badge-error gap-2 py-3 px-4 font-semibold text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          مرفوض
+        </div>
+
+        <div v-else-if="item.needs_modification === 1 || item.current_stage === 'needs_modification'" class="badge badge-warning gap-2 py-3 px-4 font-semibold text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          يحتاج تعديل
+        </div>
         </template>
 
       

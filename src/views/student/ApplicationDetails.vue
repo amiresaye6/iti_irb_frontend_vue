@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { applicationServices } from '@/services/applicationServices.js'
 import ApplicationStages from '@/components/common/ApplicationStages.vue'
+import Comments from '@/components/common/Comments.vue'
 
 const Base_url = import.meta.env.VITE_BACKEND_SERVER;
 const Docs_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
@@ -258,7 +259,13 @@ const getStageName = (stage) => {
                     </div>
                 </div>
             </div>
-            
+
+            <div class="bg-base-100 rounded-2xl shadow-sm border border-base-200/60 overflow-hidden">
+                <div class="p-6 sm:p-8">
+                    <Comments :id="application.id" />
+                </div>
+            </div>
+
         </div>
     </div>
     <div v-if="application?.needs_modification" class="flex items-center justify-between bg-base-100 p-4 sm:p-6 rounded-2xl shadow-sm border border-base-200/60">

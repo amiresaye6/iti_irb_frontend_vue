@@ -14,11 +14,11 @@ const form = ref({
 const showPassword = ref(false);
 
 const ROLE_ROUTES = {
-    admin:    '/admin/pending-students',
-    super_admin: '/admin/users',
+    admin:    '/admin/dashboard',
+    super_admin: '/admin/dashboard',
     student:  '/student/Dashboard',
     reviewer: '/reviewer/Dashboard',
-    manager:  '/manager/Dashboard',
+    manager:  '/manager/dashboard',
 };
 
 const handleLogin = async () => {
@@ -136,14 +136,14 @@ const handleLogin = async () => {
                 </label>
 
                 <!-- Forgot password -->
-                <!-- <div class="fieldset-label justify-end mt-2">
+                <div class="fieldset-label justify-end mt-2">
                     <RouterLink
-                        to="/forgot-password"
+                        to="/forget-password"
                         class="text-xs text-primary hover:text-secondary transition-colors link link-hover"
                     >
                         نسيت كلمة المرور؟
                     </RouterLink>
-                </div> -->
+                </div>
             </fieldset>
 
             <!-- Submit -->
