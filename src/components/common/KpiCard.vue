@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="relative group bg-white  text-gray-900  shadow-lg rounded-xl p-5 transition-all duration-300 ease-in-out transform hover:-translate-y-1 w-full h-40 flex flex-col justify-between"
+    class="relative group bg-white  text-gray-900  shadow-lg rounded-xl p-5 transition-all duration-300 ease-in-out transform hover:-translate-y-1 w-full h-35 flex flex-col justify-between"
     :class="`hover:border-b-4 ${borderColorClass}`"
   >
     <div class="flex items-start justify-between">
