@@ -28,6 +28,12 @@ const routes = [
     meta: { layout: 'auth' },
     component: () => import('../views/global/RegisterView.vue')
     },
+    {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    meta: { layout: 'auth', guest: true },
+    component: () => import('../views/global/ResetPassword.vue')
+    },
 
     // --- Main System Pages ---
     {
@@ -144,6 +150,19 @@ const routes = [
     meta: { layout: "auth" },
     component: () => import("../views/global/RegisterView.vue"),
   },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    meta: { layout: "auth", guest: true },
+    component: () => import("../views/global/ResetPassword.vue"),
+  },
+  {
+    path: '/forget-password',
+    name: 'forget-password',
+    component: () => import('@/views/global/ForgetPassword.vue'),
+    meta: { layout: "auth",guest: true },
+},
+
 
     // --- Admin / Manager Payment Pages ---
     {
