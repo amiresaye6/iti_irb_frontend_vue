@@ -12,10 +12,10 @@
       <nav class="max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
         <!-- Brand -->
         <RouterLink to="/" class="flex items-center gap-3 group">
-          <div
-            class="w-9 h-9 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-lg shadow-sm shadow-primary/30"
+           <div
+            class="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-lg shadow-sm shadow-primary/30"
           >
-            I
+           <i class="fa-solid fa-microscope text-xl text-white"></i>
           </div>
           <span class="font-bold text-xl text-neutral">IRB Platform</span>
         </RouterLink>

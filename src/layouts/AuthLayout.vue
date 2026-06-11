@@ -25,7 +25,7 @@ trackMount("About view")
                 <div class="lg:hidden text-center mb-6">
                     <div class="inline-flex items-center justify-center gap-2 mb-2">
                         <span
-                            class="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-xl shadow-md shadow-primary/20">I</span>
+                            class="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-xl shadow-md shadow-primary/20"><i class="fa-solid fa-microscope text-xl text-white"></i></span>
                     </div>
                     <h2 class="text-2xl font-bold text-neutral">تسجيل الدخول</h2>
                 </div>
@@ -41,7 +41,7 @@ trackMount("About view")
             <div class="z-10 text-center max-w-lg p-8">
                 <div class="flex justify-center mb-8">
                     <span
-                        class="w-24 h-24 rounded-2xl bg-primary text-primary-content flex items-center justify-center font-black text-5xl shadow-xl shadow-primary/30 transform -rotate-3 hover:rotate-0 transition-transform duration-300">I</span>
+                        class="w-24 h-24 rounded-2xl bg-primary text-primary-content flex items-center justify-center font-black text-5xl shadow-xl shadow-primary/30 transform -rotate-3 hover:rotate-0 transition-transform duration-300"><i class="fa-solid fa-microscope text-5xl text-white"></i></span>
                 </div>
                 <h3 class="text-4xl font-bold text-white mb-6 leading-tight">منظومة الموافقات البحثية</h3>
                 <p class="text-lg text-neutral-content/80 leading-relaxed">

@@ -38,7 +38,7 @@ const handleLogin = async () => {
             <div class="flex items-center gap-3 mb-4">
                 <span
                     class="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-black text-lg shadow-md shadow-primary/20 hidden lg:flex">
-                    I
+                    <i class="fa-solid fa-microscope text-xl text-white"></i>
                 </span>
                 <span class="text-xs font-semibold tracking-widest text-primary uppercase hidden lg:block">
                     IRB Portal

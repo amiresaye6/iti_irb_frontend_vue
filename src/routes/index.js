@@ -29,13 +29,13 @@ const routes = [
     component: () => import('../views/global/RegisterView.vue')
     },
 
-    // --- Main System Pages ---
-    {
-        path: '/dashboard',
-        name: "Dashboard",
-        meta: { layout: 'main' },
-        component: () => import('../views/global/ComponentsShowcase.vue')
-    },
+    // // --- Main System Pages ---
+    // {
+    //     path: '/dashboard',
+    //     name: "Dashboard",
+    //     meta: { layout: 'main' },
+    //     component: () => import('../views/global/ComponentsShowcase.vue')
+    // },
     
     // --- Reviewer Pages ---
     {

@@ -317,11 +317,13 @@ const navLinks = computed(() => {
                 <!-- Microscope icon — matches PHP sidebar -->
                 <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:opacity-90 transition-opacity"
                      style="background: linear-gradient(135deg, #1abc9c, #16a085); box-shadow: 0 4px 12px rgba(26,188,156,0.35);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1 1 .03 2.798-1.442 2.798H4.24c-1.47 0-2.44-1.798-1.442-2.798L4.2 15.3" />
-                    </svg>
+                    </svg> -->
+    
+                    <i class="fa-solid fa-microscope text-xl text-white"></i>
                 </div>
 
                 <div v-if="isExpanded" class="flex flex-col whitespace-nowrap overflow-hidden">
