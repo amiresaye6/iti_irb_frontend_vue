@@ -136,14 +136,14 @@ const handleLogin = async () => {
                 </label>
 
                 <!-- Forgot password -->
-                <!-- <div class="fieldset-label justify-end mt-2">
+                <div class="fieldset-label justify-end mt-2">
                     <RouterLink
-                        to="/forgot-password"
+                        to="/forget-password"
                         class="text-xs text-primary hover:text-secondary transition-colors link link-hover"
                     >
                         نسيت كلمة المرور؟
                     </RouterLink>
-                </div> -->
+                </div>
             </fieldset>
 
             <!-- Submit -->

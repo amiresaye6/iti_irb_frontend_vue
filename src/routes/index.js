@@ -9,6 +9,114 @@ const routes = [
     name: "Home",
     meta: { layout: "landing" },
     component: () => import("../views/global/HomeView.vue"),
+    // --- Landing Pages ---
+    {
+        path: '/',
+        name: "Home",
+        meta: { layout: 'landing' },
+        component: () => import('../views/global/HomeView.vue')
+    },
+    {
+        path: '/about',
+        name: "About Us",
+        meta: { layout: 'landing' },
+        component: () => import('../views/global/AboutView.vue')
+    },
+
+    // --- Auth Pages ---
+    {
+        path: '/login',
+        name: "Login",
+        meta: { layout: 'auth', guest: true },
+        component: () => import('../views/global/LoginView.vue')
+    },
+    {
+    path: '/register',
+    name: 'Register',
+    meta: { layout: 'auth' },
+    component: () => import('../views/global/RegisterView.vue')
+    },
+    {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    meta: { layout: 'auth', guest: true },
+    component: () => import('../views/global/ResetPassword.vue')
+    },
+
+    // --- Main System Pages ---
+    {
+        path: '/dashboard',
+        name: "Dashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/global/ComponentsShowcase.vue')
+    },
+    
+    // --- Reviewer Pages ---
+    {
+        path: '/reviewer/dashboard',
+        name: "ReviewerDashboard",
+        meta: { layout: 'main' },
+        component: () => import('../views/reviewer/DashboardView.vue')
+    },
+    {
+        path: '/reviewer/pending',
+        name: "PendingAssignments",
+        meta: { layout: 'main' },
+        component: () => import('../views/reviewer/PendingAssignments.vue')
+    },
+    {
+        path: '/reviewer/active',
+        name: "AssignedResearches",
+        meta: { layout: 'main' },
+        component: () => import('../views/reviewer/AssignedResearches.vue')
+    },
+    {
+        path: '/reviewer/review/:id',
+        name: "ReviewForm",
+        meta: { layout: 'main' },
+        component: () => import('../views/reviewer/ReviewForm.vue')
+    },
+    {
+        path: '/reviewer/history',
+        name: "AssignmentHistory",
+        meta: { layout: 'main' },
+        component: () => import('../views/reviewer/AssignmentHistory.vue')
+    },
+    
+    // --- Notifications Pages ---
+    {
+        path: '/notifications',
+        name: "UserNotifications",
+        meta: { layout: 'main' },
+        component: () => import('../views/notifications/UserNotifications.vue')
+    },
+    {
+        path: '/notifications/:id',
+        name: "NotificationDetails",
+        meta: { layout: 'main' },
+        component: () => import('../views/notifications/NotificationDetails.vue')
+    },
+    // --- student ---
+    {
+    path: '/profile',
+    name: 'Profile',
+    meta: { layout: 'main' },
+    component: () => import('../views/student/ProfileView.vue')
+   },
+
+
+// --- Admin ---
+   {
+    path: '/admin/add-staff',
+    name: 'AddStaff',
+    meta: { layout: 'main', role: 'admin' },
+    component: () => import('../views/admin/AddStaffView.vue')
+   },
+   {
+    path: '/admin/users',
+    name: 'AllUsers',
+    meta: { layout: 'main', role: ['admin', 'super_admin'] },
+    component: () => import('../views/admin/AllUsersView.vue')
   },
   {
     path: "/about",
@@ -32,6 +140,19 @@ const routes = [
     meta: { layout: "auth" },
     component: () => import("../views/global/RegisterView.vue"),
   },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    meta: { layout: "auth", guest: true },
+    component: () => import("../views/global/ResetPassword.vue"),
+  },
+  {
+    path: '/forget-password',
+    name: 'forget-password',
+    component: () => import('@/views/global/ForgetPassword.vue'),
+    meta: { layout: "auth",guest: true },
+},
+
 
   // =============================================
   //  DASHBOARD REDIRECT
