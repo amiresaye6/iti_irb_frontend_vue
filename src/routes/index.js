@@ -4,11 +4,7 @@ const routes = [
   // =============================================
   //  PUBLIC / LANDING PAGES
   // =============================================
-  {
-    path: "/",
-    name: "Home",
-    meta: { layout: "landing" },
-    component: () => import("../views/global/HomeView.vue"),
+
     // --- Landing Pages ---
     {
         path: '/',
