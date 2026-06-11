@@ -13,6 +13,8 @@ export const useApi = async (
         setError(null);
 
         const token = localStorage.getItem('token');
+        const isFormData = data instanceof FormData;
+        
         const options = {
             method,
             headers: {

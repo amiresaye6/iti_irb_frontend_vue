@@ -37,8 +37,27 @@ export const reviewService = {
     return useApi({ url: `${Base_url}/reviewer/assignments/${reviewId}/refuse`, method: 'POST', data: { reason }, setLoading, setError });
   },
 
-  submitDecision(applicationId, data, setLoading, setError) {
-    return useApi({ url: `${Base_url}/reviewer/reviews/${applicationId}/submit`, method: 'POST', data, setLoading, setError });
+  // In reviewService, replace submitDecision temporarily:
+  submitDecision(applicationId, formData, setLoading, setError) {
+    const token = localStorage.getItem('token'); // or however you store it
+
+    return fetch(`${Base_url}/reviewer/reviews/${applicationId}/submit`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message && !data.errors) return data;
+        if (setError) setError({ message: data.message });
+        return null;
+      })
+      .catch(err => {
+        if (setError) setError({ message: 'حدث خطأ' });
+        return null;
+      });
   },
 
   getAwaitingDecisionAssignments(setLoading, setError) {
@@ -52,7 +71,7 @@ export const reviewService = {
   },
 
   getAvailableReviewers(applicationId, setLoading, setError) {
-    const url = applicationId 
+    const url = applicationId
       ? `${Base_url}/admin/reviews/available-reviewers?applicationId=${applicationId}`
       : `${Base_url}/admin/reviews/available-reviewers`;
     return useApi({ url, method: 'GET', setLoading, setError });

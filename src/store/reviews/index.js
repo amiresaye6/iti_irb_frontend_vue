@@ -10,12 +10,12 @@ export const useReviewStore = defineStore('reviews', {
     assignmentHistory: [],
     awaitingDecisionAssignments: [],
     currentReviewDetails: null,
-    
+
     // Admin
     applicationsUnderReview: [],
     availableReviewers: [],
     allSystemReviews: [],
-    
+
     loading: false,
     error: null
   }),
@@ -96,13 +96,20 @@ export const useReviewStore = defineStore('reviews', {
       return { success: false, message: 'حدث خطأ' };
     },
 
+
     async submitDecision(applicationId, payload) {
-      const data = await reviewService.submitDecision(applicationId, payload);
+      let errMsg = null;
+      const data = await reviewService.submitDecision(
+        applicationId,
+        payload,
+        () => { },
+        (e) => { errMsg = e?.message || 'حدث خطأ'; }
+      );
       if (data) {
         await this.fetchActiveAssignments();
         return { success: true };
       }
-      return { success: false, message: 'حدث خطأ' };
+      return { success: false, message: errMsg || 'حدث خطأ' };
     },
 
     async fetchAwaitingDecisionAssignments() {
@@ -138,9 +145,9 @@ export const useReviewStore = defineStore('reviews', {
     async assignReviewer(applicationId, reviewerId) {
       let errMessage = null;
       const data = await reviewService.assignReviewer(
-        applicationId, 
+        applicationId,
         reviewerId,
-        () => {},
+        () => { },
         (e) => { errMessage = e?.message; }
       );
       if (data) return { success: true, message: data.message || 'تم الإسناد بنجاح' };
@@ -161,7 +168,7 @@ export const useReviewStore = defineStore('reviews', {
       let errMsg = null;
       const data = await reviewService.getApplicationAssignmentHistory(
         applicationId,
-        () => {},
+        () => { },
         (e) => { errMsg = e?.message || 'حدث خطأ'; }
       );
       if (data) return { success: true, data };
